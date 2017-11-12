@@ -6,6 +6,7 @@ exec 1>&2
 set -x
 set -e
 
+# Delete "pi" user and create another one
 useradd -m %USERNAME% -G sudo || true
 echo "%USERNAME%:%PASSWORD%" | chpasswd
 install -d -m 700 /home/%USERNAME%/.ssh
