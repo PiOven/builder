@@ -97,6 +97,8 @@ do
   umount ${ROOT_DIR} || true
 
   kpartx -d ${IMG_FILE}
+
+  sleep 5
 done
 
 echo "--- Finished successfully ---"
