@@ -27,6 +27,7 @@ a new Pi image you can flash to a memory card (suggest
 
 # ToDo
 
+- Generate a random hostname for each PI
 - Get `make setup` to prompt for the setup
 - Get working on operating systems (currently only tested on Fedora 26)
 - Detect the mounted volume, other than `/dev/mapper/loop2*`
