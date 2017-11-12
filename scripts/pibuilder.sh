@@ -53,6 +53,7 @@ do
   INST_NUM=$(padNumber ${i})
 
   IMG_FILE="${UNZIP_TARGET/.img/-$INST_NUM}.img"
+  TARGET_HOSTNAME="${PI_HOSTNAME}-${INST_NUM}"
 
   rm "${IMG_FILE}" || true
 
@@ -75,11 +76,11 @@ do
   fi
 
   # Configure hostname
-  echo "${PI_HOSTNAME}" > "${ROOT_DIR}/etc/hostname"
+  echo "${TARGET_HOSTNAME}" > "${ROOT_DIR}/etc/hostname"
 
   HOST_FILE=$(cat "${ROOT_DIR}/etc/hosts")
   OLD_HOST="raspberrypi"
-  echo "${HOST_FILE//$OLD_HOST/$PI_HOSTNAME}" > "${ROOT_DIR}/etc/hosts"
+  echo "${HOST_FILE//$OLD_HOST/$TARGET_HOSTNAME}" > "${ROOT_DIR}/etc/hosts"
 
   # Set the first boot script
   if ! (grep -q "./scripts/firstrun-config.sh" "${ROOT_DIR}/etc/rc.local"); then
