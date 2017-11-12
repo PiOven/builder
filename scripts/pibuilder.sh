@@ -23,7 +23,7 @@ download () {
 
 padNumber () {
   NUMBER=${1}
-  printf "%03d\n" $NUMBER
+  printf "%03d\n" ${NUMBER}
 }
 
 if [ $UID != 0 ]; then
