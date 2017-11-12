@@ -19,6 +19,8 @@ download () {
   unzip -o ${TARGET} -d "${CACHE_DIR}/unzip"
   mv ${CACHE_DIR}/unzip/* ${UNZIP_TARGET}
   rm -Rf "${CACHE_DIR}/unzip"
+
+  sleep 5
 }
 
 padNumber () {
@@ -67,6 +69,8 @@ do
   # @todo get the loop value from kpartx
   mount /dev/mapper/loop2p1 ${BOOT_DIR} -o ro --rw
   mount /dev/mapper/loop2p2 ${ROOT_DIR} -o ro --rw
+
+  sleep 5
 
   # Enable SSH
   touch ${BOOT_DIR}/ssh
