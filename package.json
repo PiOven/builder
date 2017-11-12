@@ -1,0 +1,26 @@
+{
+  "name": "pibuilder",
+  "version": "0.0.0",
+  "description": "A script to automate building of a configured Raspberry Pi",
+  "main": "index.js",
+  "scripts": {
+    "test": "npm run -s test:lint",
+    "test:lint": "semistandard ./"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/riggerthegeek/pibuilder.git"
+  },
+  "author": "Simon Emms <simon@simonemms.com>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/riggerthegeek/pibuilder/issues"
+  },
+  "homepage": "https://github.com/riggerthegeek/pibuilder#readme",
+  "dependencies": {
+    "inquirer": "^3.3.0"
+  },
+  "devDependencies": {
+    "semistandard": "^11.0.0"
+  }
+}
