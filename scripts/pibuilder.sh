@@ -46,7 +46,7 @@ source ${SETTINGS_FILE}
 PI_PASSWORD=$(cat /dev/urandom | tr -dc 'a-zA-Z0-9' | fold -w 32 | head -n 1)
 
 # Download the operating system
-#download ${PI_OS}
+download ${PI_OS}
 
 for i in `seq 1 ${PI_INSTANCE_COUNT}`
 do
@@ -64,8 +64,9 @@ do
   umount ${BOOT_DIR} || true
   umount ${ROOT_DIR} || true
 
-  mount /dev/mapper/loop0p1 ${BOOT_DIR} -o ro --rw
-  mount /dev/mapper/loop0p2 ${ROOT_DIR} -o ro --rw
+  # @todo get the loop value from kpartx
+  mount /dev/mapper/loop2p1 ${BOOT_DIR} -o ro --rw
+  mount /dev/mapper/loop2p2 ${ROOT_DIR} -o ro --rw
 
   # Enable SSH
   touch ${BOOT_DIR}/ssh
