@@ -3,6 +3,7 @@
 set -e
 
 CACHE_DIR="./cache"
+RESULT_FILE="${CACHE_DIR}/result"
 SETTINGS_FILE="${CACHE_DIR}/settings.sh"
 BOOT_DIR="/media/rpi_boot"
 ROOT_DIR="/media/rpi_root"
@@ -16,7 +17,7 @@ download () {
     curl -L ${SRC} -o ${TARGET}
   fi
 
-  rm ${UNZIP_TARGET}
+  rm -f ${UNZIP_TARGET}
   unzip -o ${TARGET} -d "${CACHE_DIR}/unzip"
   mv ${CACHE_DIR}/unzip/* ${UNZIP_TARGET}
   rm -Rf "${CACHE_DIR}/unzip"
@@ -33,6 +34,8 @@ if [ $UID != 0 ]; then
   echo 'Script must be run as root'
   exit 1
 fi
+
+rm -f ${RESULT_FILE}
 
 # Create directories to mount the images to
 mkdir -p ${BOOT_DIR} ${ROOT_DIR}
@@ -92,6 +95,9 @@ umount ${BOOT_DIR} || true
 umount ${ROOT_DIR} || true
 
 kpartx -d ${UNZIP_TARGET}
+
+echo "username: ${PI_USERNAME}" >> "${RESULT_FILE}"
+echo "password: ${PI_PASSWORD}" >> "${RESULT_FILE}"
 
 echo "--- Finished successfully ---"
 echo "username: ${PI_USERNAME}"
