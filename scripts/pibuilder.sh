@@ -25,11 +25,6 @@ download () {
   sleep 5
 }
 
-padNumber () {
-  NUMBER=${1}
-  printf "%03d\n" ${NUMBER}
-}
-
 if [ $UID != 0 ]; then
   echo 'Script must be run as root'
   exit 1
