@@ -10,7 +10,7 @@ define
 - **PI_WIFI_SSID**: The SSID WiFi
 - **PI_WIFI_PASS**: The password for the WiFi
 - **PI_HOSTNAME**: The new network hostname (replacing `raspberry`)
-- **PI_SSH_KEY**: The SSH key to use for connecting (replacing password)
+- **PI_SSH_KEY**: The filepath to the SSH public key to use for connecting (replacing password)
 - **PI_USERNAME**: The new username (replacing `pi`)
 - **PI_OS**: The URL to the OS to download
 
