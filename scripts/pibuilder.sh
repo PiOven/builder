@@ -7,11 +7,14 @@ RESULT_FILE="${CACHE_DIR}/result"
 SETTINGS_FILE="${CACHE_DIR}/settings.sh"
 BOOT_DIR="/media/rpi_boot"
 ROOT_DIR="/media/rpi_root"
-TARGET="${CACHE_DIR}/os.zip"
 UNZIP_TARGET="${CACHE_DIR}/os.img"
 
 download () {
+  # Add an MD5 sum on the filename to ensure we have the correct file
   SRC=${1}
+  SUM=$(printf '%s' $SRC | md5sum | cut -d ' ' -f 1)
+
+  TARGET="${CACHE_DIR}/os.${SUM}.zip"
 
   if [ ! -f "${TARGET}" ]; then
     curl -L ${SRC} -o ${TARGET}
@@ -23,6 +26,11 @@ download () {
   rm -Rf "${CACHE_DIR}/unzip"
 
   sleep 5
+}
+
+padNumber () {
+  NUMBER=${1}
+  printf "%03d\n" ${NUMBER}
 }
 
 if [ $UID != 0 ]; then
@@ -69,27 +77,23 @@ sleep 5
 # Enable SSH
 touch ${BOOT_DIR}/ssh
 
-# Configure hostname
-echo "${PI_HOSTNAME}" > "${ROOT_DIR}/etc/hostname"
-OLD_HOST="raspberrypi"
-sed -i "s/$OLD_HOST/$PI_HOSTNAME/g" "${ROOT_DIR}/etc/hosts"
-
 # Configure WIFI
 if ! (grep -q "ssid=" "${ROOT_DIR}/etc/wpa_supplicant/wpa_supplicant.conf"); then
   printf "\nnetwork={\n  ssid=\"%s\"\n  psk=\"%s\"\n}\n" ${PI_WIFI_SSID} ${PI_WIFI_PASS} >> ${ROOT_DIR}/etc/wpa_supplicant/wpa_supplicant.conf
 fi
 
 # Set the first boot script
-if ! (grep -q "./scripts/firstrun-config.sh" "${ROOT_DIR}/etc/rc.local"); then
+if ! (grep -q "./scripts/setup.sh" "${ROOT_DIR}/etc/rc.local"); then
   sed -i '$ d' "${ROOT_DIR}/etc/rc.local"
-  printf "if [ -f /firstrun-config.sh ]; then\n  sh /firstrun-config.sh\nfi\n\nexit 0" >> "${ROOT_DIR}/etc/rc.local"
+  printf "if [ -f /setup.sh ]; then\n  printf 'Setting up the Pi\n'\n  sh /setup.sh\nfi\n\n  printf 'Pi setup\n'\nexit 0" >> "${ROOT_DIR}/etc/rc.local"
 fi
 
-cp ./scripts/firstrun-config.sh "${ROOT_DIR}/firstrun-config.sh"
-sed -i "s/%PI_HOSTNAME%/$PI_HOSTNAME/g" "${ROOT_DIR}/firstrun-config.sh"
-sed -i "s/%USERNAME%/$PI_USERNAME/g" "${ROOT_DIR}/firstrun-config.sh"
-sed -i "s/%PASSWORD%/$PI_PASSWORD/g" "${ROOT_DIR}/firstrun-config.sh"
-chmod 755 "${ROOT_DIR}/firstrun-config.sh"
+cp ./scripts/setup.sh "${ROOT_DIR}/setup.sh"
+sed -i "s/%PI_HOSTNAME%/$PI_HOSTNAME/g" "${ROOT_DIR}/setup.sh"
+sed -i "s/%PI_USERNAME%/$PI_USERNAME/g" "${ROOT_DIR}/setup.sh"
+sed -i "s/%PI_PASSWORD%/$PI_PASSWORD/g" "${ROOT_DIR}/setup.sh"
+sed -i "s/%PI_PASSWORD%/$PI_WIFI_SSID/g" "${ROOT_DIR}/setup.sh"
+chmod 755 "${ROOT_DIR}/setup.sh"
 cp "${PI_SSH_KEY}" "${ROOT_DIR}/id_rsa.pub"
 
 umount ${BOOT_DIR} || true
