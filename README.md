@@ -17,7 +17,7 @@ define
 ## OS URLs
 
 - [Raspbian](https://downloads.raspberrypi.org/raspbian/images)
-- [Raspbian Lite](https://downloads.raspberrypi.org/raspbian/images)
+- [Raspbian Lite](https://downloads.raspberrypi.org/raspbian_lite/images)
 
 # Run
 
