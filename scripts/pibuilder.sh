@@ -54,14 +54,20 @@ PI_PASSWORD=$(cat /dev/urandom | tr -dc 'a-zA-Z0-9' | fold -w 32 | head -n 1)
 # Download the operating system
 download ${PI_OS}
 
-kpartx -va ${UNZIP_TARGET}
+LOOP=$(kpartx -va ${UNZIP_TARGET})
+
+MOUNT_POINTS=$(echo ${LOOP} | grep -ioE 'loop(\w+)')
 
 umount ${BOOT_DIR} || true
 umount ${ROOT_DIR} || true
 
-# @todo get the loop value from kpartx
-mount /dev/mapper/loop2p1 ${BOOT_DIR} -o ro --rw
-mount /dev/mapper/loop2p2 ${ROOT_DIR} -o ro --rw
+while read -r line; do
+  if [[ $line == *"p1" ]]; then
+    mount "/dev/mapper/${line}" ${BOOT_DIR} -o ro --rw
+  elif [[ $line == *"p2" ]]; then
+    mount "/dev/mapper/${line}" ${ROOT_DIR} -o ro --rw
+  fi
+done <<< "$MOUNT_POINTS"
 
 sleep 5
 
