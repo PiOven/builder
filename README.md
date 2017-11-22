@@ -30,7 +30,7 @@ a new Pi image you can flash to a memory card (suggest
 
 # ToDo
 
-- Get `make setup` to prompt for the setup
-- Get working on operating systems (currently only tested on Fedora)
-- Set static IP for eth0/wlan0 (depending on which is connected)
-- Configure DDNS
+- [ ] Get `make setup` to prompt for the setup
+- [ ] Get working on operating systems (currently only tested on Fedora)
+- [ ] Set static IP for eth0/wlan0 (depending on which is connected)
+- [ ] Configure DDNS
