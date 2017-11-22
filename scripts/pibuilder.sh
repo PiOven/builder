@@ -51,6 +51,27 @@ fi
 # Load up the variables
 source ${SETTINGS_FILE}
 
+# Validate the settings
+if [[ -z "${PI_HOSTNAME}" ]]; then
+  echo "PI_HOSTNAME needs to be configured with your desired hostname"
+  exit 1
+fi
+
+if [[ -z "${PI_SSH_KEY}" ]]; then
+  echo "PI_SSH_KEY needs to be configured with your desired SSH key"
+  exit 1
+fi
+
+if ! [[ -f "${PI_SSH_KEY}" ]]; then
+  echo "PI_SSH_KEY (${PI_SSH_KEY}) is not a file"
+  exit 1
+fi
+
+if [[ -z "${PI_USERNAME}" ]]; then
+  echo "PI_USERNAME needs to be configured with your designed username"
+  exit 1
+fi
+
 # Generate the password
 PI_PASSWORD=$(cat /dev/urandom | tr -dc 'a-zA-Z0-9' | fold -w 32 | head -n 1)
 
