@@ -4,7 +4,7 @@ set -e
 
 CACHE_DIR="./cache"
 RESULT_FILE="${CACHE_DIR}/result"
-SETTINGS_FILE="${CACHE_DIR}/settings.sh"
+SETTINGS_FILE="./settings.sh"
 BOOT_DIR="/media/rpi_boot"
 ROOT_DIR="/media/rpi_root"
 UNZIP_TARGET="${CACHE_DIR}/os.img"
