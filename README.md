@@ -35,3 +35,4 @@ a new Pi image you can flash to a memory card (suggest
 - [ ] Set static IP for eth0/wlan0 (depending on which is connected)
 - [ ] Configure DDNS
 - [ ] Send an email telling of the IP address of the Pi
+- [ ] Specify an IP address range
