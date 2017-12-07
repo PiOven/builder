@@ -14,6 +14,8 @@ download () {
   SRC=${1}
   SUM=$(printf '%s' $SRC | md5sum | cut -d ' ' -f 1)
 
+  mkdir -p ${CACHE_DIR}
+
   TARGET="${CACHE_DIR}/os.${SUM}.zip"
 
   if [ ! -f "${TARGET}" ]; then
