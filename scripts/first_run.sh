@@ -28,6 +28,14 @@ OLD_HOST="raspberrypi"
 sed -i "s/$OLD_HOST/$PI_CONFIG_HOSTNAME/g" "/etc/hosts"
 /etc/init.d/hostname.sh
 
+# Send email telling about this server
+curl -s --user "api:%PI_MAILGUN_API_KEY%" \
+  https://api.mailgun.net/v3/%PI_MAILGUN_DOMAIN%/messages \
+  -F from="%PI_USERNAME%@%PI_MAILGUN_DOMAIN%" \
+  -F to=%PI_EMAIL_ADDRESS% \
+  -F subject="New Raspberry Pi set up" \
+  -F text="New %PI_USERNAME% setup on: ${PI_IP_ADDRESS}"
+
 rm -- "$0"
 
 echo "Deleted current script"
