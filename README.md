@@ -36,4 +36,4 @@ a new Pi image you can flash to a memory card (suggest
 - [ ] Configure DDNS
 - [ ] Send an email telling of the IP address of the Pi
 - [ ] Specify an IP address range
-- [ ] Get `localhost` working (comment out the `::1    localhost ip6-localhost ip6-loopback` line)
+- [ ] Get `localhost` working (comment out the `::1    localhost ip6-localhost ip6-loopback` line) in `/etc/hosts`

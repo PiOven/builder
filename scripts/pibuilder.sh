@@ -47,7 +47,8 @@ mkdir -p ${BOOT_DIR} ${ROOT_DIR}
 
 if [ ! -f "${SETTINGS_FILE}" ]; then
   # Running setup first
-  make setup
+  echo "Please add configuration to ${SETTINGS_FILE}"
+  exit 1
 fi
 
 # Load up the variables
@@ -106,18 +107,20 @@ if ! (grep -q "ssid=" "${ROOT_DIR}/etc/wpa_supplicant/wpa_supplicant.conf"); the
 fi
 
 # Set the first boot script
-if ! (grep -q "./scripts/setup.sh" "${ROOT_DIR}/etc/rc.local"); then
+if ! (grep -q "./scripts/first_run.sh" "${ROOT_DIR}/etc/rc.local"); then
   sed -i '$ d' "${ROOT_DIR}/etc/rc.local"
-  printf "if [ -f /setup.sh ]; then\n  printf 'Setting up the Pi\n'\n  sh /setup.sh\nfi\n\n  printf 'Pi setup\n'\nexit 0" >> "${ROOT_DIR}/etc/rc.local"
+  printf "if [ -f /first_run.sh ]; then\n  printf 'Setting up the Pi\n'\n  sh /first_run.sh\nfi\n\n  printf 'Pi setup\n'\nexit 0" >> "${ROOT_DIR}/etc/rc.local"
 fi
 
-cp ./scripts/setup.sh "${ROOT_DIR}/setup.sh"
-sed -i "s/%PI_HOSTNAME%/$PI_HOSTNAME/g" "${ROOT_DIR}/setup.sh"
-sed -i "s/%PI_USERNAME%/$PI_USERNAME/g" "${ROOT_DIR}/setup.sh"
-sed -i "s/%PI_PASSWORD%/$PI_PASSWORD/g" "${ROOT_DIR}/setup.sh"
-sed -i "s/%PI_PASSWORD%/$PI_WIFI_SSID/g" "${ROOT_DIR}/setup.sh"
-chmod 755 "${ROOT_DIR}/setup.sh"
+cp ./scripts/first_run.sh "${ROOT_DIR}/first_run.sh"
+sed -i "s/%PI_HOSTNAME%/$PI_HOSTNAME/g" "${ROOT_DIR}/first_run.sh"
+sed -i "s/%PI_USERNAME%/$PI_USERNAME/g" "${ROOT_DIR}/first_run.sh"
+sed -i "s/%PI_PASSWORD%/$PI_PASSWORD/g" "${ROOT_DIR}/first_run.sh"
+sed -i "s/%PI_PASSWORD%/$PI_WIFI_SSID/g" "${ROOT_DIR}/first_run.sh"
+chmod 755 "${ROOT_DIR}/first_run.sh"
 cp "${PI_SSH_KEY}" "${ROOT_DIR}/id_rsa.pub"
+cp -Rf ./data "${ROOT_DIR}/opt/data"
+cp ./files/hosts "${ROOT_DIR}/etc/hosts"
 
 umount ${BOOT_DIR} || true
 umount ${ROOT_DIR} || true
