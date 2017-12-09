@@ -101,9 +101,11 @@ sleep 5
 # Enable SSH
 touch ${BOOT_DIR}/ssh
 
-# Configure WIFI
-if ! (grep -q "ssid=" "${ROOT_DIR}/etc/wpa_supplicant/wpa_supplicant.conf"); then
-  printf "\nnetwork={\n  ssid=\"%s\"\n  psk=\"%s\"\n}\n" ${PI_WIFI_SSID} ${PI_WIFI_PASS} >> ${ROOT_DIR}/etc/wpa_supplicant/wpa_supplicant.conf
+# Configure WiFi - if required
+if [[ "${PI_WIFI_SSID}" && "${PI_WIFI_PASS}" ]]; then
+  if ! (grep -q "ssid=" "${ROOT_DIR}/etc/wpa_supplicant/wpa_supplicant.conf"); then
+    printf "\nnetwork={\n  ssid=\"%s\"\n  psk=\"%s\"\n}\n" ${PI_WIFI_SSID} ${PI_WIFI_PASS} >> ${ROOT_DIR}/etc/wpa_supplicant/wpa_supplicant.conf
+  fi
 fi
 
 # Set the first boot script
@@ -116,7 +118,7 @@ cp ./scripts/first_run.sh "${ROOT_DIR}/first_run.sh"
 sed -i "s/%PI_HOSTNAME%/$PI_HOSTNAME/g" "${ROOT_DIR}/first_run.sh"
 sed -i "s/%PI_USERNAME%/$PI_USERNAME/g" "${ROOT_DIR}/first_run.sh"
 sed -i "s/%PI_PASSWORD%/$PI_PASSWORD/g" "${ROOT_DIR}/first_run.sh"
-sed -i "s/%PI_PASSWORD%/$PI_WIFI_SSID/g" "${ROOT_DIR}/first_run.sh"
+sed -i "s/%PI_WIFI_SSID%/$PI_WIFI_SSID/g" "${ROOT_DIR}/first_run.sh"
 sed -i "s/%PI_MAILGUN_API_KEY%/$PI_MAILGUN_API_KEY/g" "${ROOT_DIR}/first_run.sh"
 sed -i "s/%PI_MAILGUN_DOMAIN%/$PI_MAILGUN_DOMAIN/g" "${ROOT_DIR}/first_run.sh"
 sed -i "s/%PI_EMAIL_ADDRESS%/$PI_EMAIL_ADDRESS/g" "${ROOT_DIR}/first_run.sh"
