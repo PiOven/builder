@@ -76,8 +76,7 @@ if [[ -z "${PI_USERNAME}" ]]; then
 fi
 
 # Generate the password
-#PI_PASSWORD=$(cat /dev/urandom | tr -dc 'a-zA-Z0-9' | fold -w 32 | head -n 1)
-PI_PASSWORD=q1w2e3r4
+PI_PASSWORD=$(cat /dev/urandom | tr -dc 'a-zA-Z0-9' | fold -w 32 | head -n 1)
 
 # Download the operating system
 download ${PI_OS}
