@@ -21,8 +21,8 @@ deluser -remove-home pi
 # Configure hostname
 PI_CONFIG_HOSTNAME="%PI_HOSTNAME%"
 for file in $(ls /opt/data); do
-  PI_CONFIG_HOSTNAME+="-"
-  PI_CONFIG_HOSTNAME+=$(shuf /opt/data/${file} -n 1 | sed -e "s/\s/-/g")
+  PI_CONFIG_HOSTNAME="${PI_CONFIG_HOSTNAME}-"
+  PI_CONFIG_HOSTNAME=${PI_CONFIG_HOSTNAME}$(shuf /opt/data/${file} -n 1 | sed -e "s/\s/-/g")
 done
 
 PI_IP_ADDRESS=$(hostname -I)
