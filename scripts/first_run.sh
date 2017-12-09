@@ -18,10 +18,15 @@ echo "%PI_USERNAME% ALL=(ALL) NOPASSWD: ALL" > /etc/sudoers.d/010_%PI_USERNAME%-
 rm /etc/sudoers.d/010_pi-nopasswd
 deluser -remove-home pi
 
+# Generate a random name
+PI_CONFIG_HOSTNAME="%PI_HOSTNAME%"
+for file in $(ls ./data); do
+  PI_CONFIG_HOSTNAME+="-"
+  PI_CONFIG_HOSTNAME+=$(shuf ./data/${file} -n 1 | sed -e "s/\s/-/g")
+done
+
 # Configure hostname
 PI_IP_ADDRESS=$(hostname -I)
-PI_HOST_IP=$(echo ${PI_IP_ADDRESS} | sed -e "s/\./-/g")
-PI_CONFIG_HOSTNAME="%PI_HOSTNAME%-${PI_HOST_IP}"
 
 echo "${PI_CONFIG_HOSTNAME}" > "/etc/hostname"
 OLD_HOST="raspberrypi"
@@ -33,8 +38,8 @@ curl -s --user "api:%PI_MAILGUN_API_KEY%" \
   https://api.mailgun.net/v3/%PI_MAILGUN_DOMAIN%/messages \
   -F from="%PI_USERNAME%@%PI_MAILGUN_DOMAIN%" \
   -F to=%PI_EMAIL_ADDRESS% \
-  -F subject="New Raspberry Pi set up" \
-  -F text="New %PI_USERNAME% setup on: ${PI_IP_ADDRESS}"
+  -F subject="New Raspberry Pi (${PI_CONFIG_HOSTNAME}) set up" \
+  -F text="New %PI_USERNAME%@${PI_CONFIG_HOSTNAME} setup on: ${PI_IP_ADDRESS}"
 
 rm -- "$0"
 

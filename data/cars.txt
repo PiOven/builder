@@ -1,22 +1,14 @@
-alfa romeo
 benetton
-bmw
 brabham
 brawn
 brm
-climax
 cooper
 ferrari
-ford
-honda
 lotus
-maserati
 matra
-mclaren
 mercedes
-porsche
 red bull
 renault
-repco
 tyrrell
+vanwall
 williams
