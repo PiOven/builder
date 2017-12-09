@@ -76,7 +76,8 @@ if [[ -z "${PI_USERNAME}" ]]; then
 fi
 
 # Generate the password
-PI_PASSWORD=$(cat /dev/urandom | tr -dc 'a-zA-Z0-9' | fold -w 32 | head -n 1)
+#PI_PASSWORD=$(cat /dev/urandom | tr -dc 'a-zA-Z0-9' | fold -w 32 | head -n 1)
+PI_PASSWORD=q1w2e3r4
 
 # Download the operating system
 download ${PI_OS}
@@ -117,9 +118,9 @@ sed -i "s/%PI_HOSTNAME%/$PI_HOSTNAME/g" "${ROOT_DIR}/first_run.sh"
 sed -i "s/%PI_USERNAME%/$PI_USERNAME/g" "${ROOT_DIR}/first_run.sh"
 sed -i "s/%PI_PASSWORD%/$PI_PASSWORD/g" "${ROOT_DIR}/first_run.sh"
 sed -i "s/%PI_PASSWORD%/$PI_WIFI_SSID/g" "${ROOT_DIR}/first_run.sh"
-sed -i "s/%PI_PASSWORD%/$PI_MAILGUN_API_KEY/g" "${ROOT_DIR}/first_run.sh"
-sed -i "s/%PI_PASSWORD%/$PI_MAILGUN_DOMAIN/g" "${ROOT_DIR}/first_run.sh"
-sed -i "s/%PI_PASSWORD%/$PI_EMAIL_ADDRESS/g" "${ROOT_DIR}/first_run.sh"
+sed -i "s/%PI_MAILGUN_API_KEY%/$PI_MAILGUN_API_KEY/g" "${ROOT_DIR}/first_run.sh"
+sed -i "s/%PI_MAILGUN_DOMAIN%/$PI_MAILGUN_DOMAIN/g" "${ROOT_DIR}/first_run.sh"
+sed -i "s/%PI_EMAIL_ADDRESS%/$PI_EMAIL_ADDRESS/g" "${ROOT_DIR}/first_run.sh"
 
 chmod 755 "${ROOT_DIR}/first_run.sh"
 cp "${PI_SSH_KEY}" "${ROOT_DIR}/id_rsa.pub"

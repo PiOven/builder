@@ -18,14 +18,13 @@ echo "%PI_USERNAME% ALL=(ALL) NOPASSWD: ALL" > /etc/sudoers.d/010_%PI_USERNAME%-
 rm /etc/sudoers.d/010_pi-nopasswd
 deluser -remove-home pi
 
-# Generate a random name
+# Configure hostname
 PI_CONFIG_HOSTNAME="%PI_HOSTNAME%"
-for file in $(ls ./data); do
+for file in $(ls /opt/data); do
   PI_CONFIG_HOSTNAME+="-"
-  PI_CONFIG_HOSTNAME+=$(shuf ./data/${file} -n 1 | sed -e "s/\s/-/g")
+  PI_CONFIG_HOSTNAME+=$(shuf /opt/data/${file} -n 1 | sed -e "s/\s/-/g")
 done
 
-# Configure hostname
 PI_IP_ADDRESS=$(hostname -I)
 
 echo "${PI_CONFIG_HOSTNAME}" > "/etc/hostname"

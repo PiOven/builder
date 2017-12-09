@@ -34,6 +34,6 @@ a new Pi image you can flash to a memory card (suggest
 - [ ] Get working on operating systems (currently only tested on Fedora)
 - [ ] Set static IP for eth0/wlan0 (depending on which is connected)
 - [ ] Configure DDNS
-- [ ] Send an email telling of the IP address of the Pi
+- [x] Send an email telling of the IP address of the Pi
 - [ ] Specify an IP address range
-- [ ] Get `localhost` working (comment out the `::1    localhost ip6-localhost ip6-loopback` line) in `/etc/hosts`
+- [x] Get `localhost` working (comment out the `::1    localhost ip6-localhost ip6-loopback` line) in `/etc/hosts`
