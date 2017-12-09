@@ -4,7 +4,7 @@ A script to automate building of a configured Raspberry Pi
 
 # Config
 
-Create a file at `./cache/settings.sh` with the following variables defined:
+Create a file at `./settings.sh` with the following variables defined:
 
 - **PI_WIFI_SSID**: The SSID WiFi
 - **PI_WIFI_PASS**: The password for the WiFi
