@@ -6,6 +6,8 @@ exec 1>&2
 set -x
 set -e
 
+DATA_DIR=/opt/data
+
 # Delete "pi" user and create another one
 useradd -m %PI_USERNAME% -G sudo || true
 echo "%PI_USERNAME%:%PI_PASSWORD%" | chpasswd
@@ -24,9 +26,9 @@ groupmod -g 1000 %PI_USERNAME%
 
 # Configure hostname
 PI_CONFIG_HOSTNAME="%PI_HOSTNAME%"
-for file in $(ls /opt/data); do
+for file in $(ls ${DATA_DIR}); do
   PI_CONFIG_HOSTNAME="${PI_CONFIG_HOSTNAME}-"
-  PI_CONFIG_HOSTNAME=${PI_CONFIG_HOSTNAME}$(shuf /opt/data/${file} -n 1 | sed -e "s/\s/-/g")
+  PI_CONFIG_HOSTNAME=${PI_CONFIG_HOSTNAME}$(shuf ${DATA_DIR}/${file} -n 1 | sed -e "s/\s/-/g")
 done
 
 PI_IP_ADDRESS=$(hostname -I)
@@ -54,6 +56,8 @@ curl -s --user "api:%PI_MAILGUN_API_KEY%" \
   -F to=%PI_EMAIL_ADDRESS% \
   -F subject="New Raspberry Pi (${PI_CONFIG_HOSTNAME}) set up" \
   -F text="New %PI_USERNAME%@${PI_CONFIG_HOSTNAME} setup on: ${PI_IP_ADDRESS}"
+
+rm -Rf ${DATA_DIR}
 
 rm -- "$0"
 
