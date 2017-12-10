@@ -50,12 +50,14 @@ if test "%PI_GPU_MEMORY%" = "16" || test "%PI_GPU_MEMORY%" = "32" || test "%PI_G
 fi
 
 # Send email telling about this server
-curl -s --user "api:%PI_MAILGUN_API_KEY%" \
-  https://api.mailgun.net/v3/%PI_MAILGUN_DOMAIN%/messages \
-  -F from="%PI_USERNAME%@%PI_MAILGUN_DOMAIN%" \
-  -F to=%PI_EMAIL_ADDRESS% \
-  -F subject="New Raspberry Pi (${PI_CONFIG_HOSTNAME}) set up" \
-  -F text="New %PI_USERNAME%@${PI_CONFIG_HOSTNAME} setup on: ${PI_IP_ADDRESS}"
+if test "%PI_MAILGUN_API_KEY%" && test "%PI_MAILGUN_DOMAIN%" && test "%PI_EMAIL_ADDRESS%"; then
+  curl -s --user "api:%PI_MAILGUN_API_KEY%" \
+    https://api.mailgun.net/v3/%PI_MAILGUN_DOMAIN%/messages \
+    -F from="%PI_USERNAME%@%PI_MAILGUN_DOMAIN%" \
+    -F to=%PI_EMAIL_ADDRESS% \
+    -F subject="New Raspberry Pi (${PI_CONFIG_HOSTNAME}) set up" \
+    -F text="New %PI_USERNAME%@${PI_CONFIG_HOSTNAME} setup on: ${PI_IP_ADDRESS}"
+fi
 
 rm -Rf ${DATA_DIR}
 
