@@ -18,6 +18,10 @@ echo "%PI_USERNAME% ALL=(ALL) NOPASSWD: ALL" > /etc/sudoers.d/010_%PI_USERNAME%-
 rm /etc/sudoers.d/010_pi-nopasswd
 deluser -remove-home pi
 
+# Change user and group ID
+usermod -u 1000 %PI_USERNAME%
+groupmod -g 1000 %PI_USERNAME%
+
 # Configure hostname
 PI_CONFIG_HOSTNAME="%PI_HOSTNAME%"
 for file in $(ls /opt/data); do
