@@ -122,12 +122,15 @@ sed -i "s/%PI_WIFI_SSID%/$PI_WIFI_SSID/g" "${ROOT_DIR}/first_run.sh"
 sed -i "s/%PI_MAILGUN_API_KEY%/$PI_MAILGUN_API_KEY/g" "${ROOT_DIR}/first_run.sh"
 sed -i "s/%PI_MAILGUN_DOMAIN%/$PI_MAILGUN_DOMAIN/g" "${ROOT_DIR}/first_run.sh"
 sed -i "s/%PI_EMAIL_ADDRESS%/$PI_EMAIL_ADDRESS/g" "${ROOT_DIR}/first_run.sh"
+sed -i "s/%PI_INSTALL_DOCKER%/$PI_INSTALL_DOCKER/g" "${ROOT_DIR}/first_run.sh"
+sed -i "s/%PI_GPU_MEMORY%/$PI_GPU_MEMORY/g" "${ROOT_DIR}/first_run.sh"
 
 chmod 755 "${ROOT_DIR}/first_run.sh"
 cp "${PI_SSH_KEY}" "${ROOT_DIR}/id_rsa.pub"
 cp -Rf ./data "${ROOT_DIR}/opt/data"
 cp ./files/hosts "${ROOT_DIR}/etc/hosts"
 
+# Clean up after ourselves
 umount ${BOOT_DIR} || true
 umount ${ROOT_DIR} || true
 

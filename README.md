@@ -37,3 +37,5 @@ a new Pi image you can flash to a memory card (suggest
 - [x] Send an email telling of the IP address of the Pi
 - [ ] Specify an IP address range
 - [x] Get `localhost` working (comment out the `::1    localhost ip6-localhost ip6-loopback` line) in `/etc/hosts`
+- [x] Option to install Docker on first boot
+- [x] Allow configuration of the GPU memory split

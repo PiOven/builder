@@ -36,6 +36,17 @@ OLD_HOST="raspberrypi"
 sed -i "s/$OLD_HOST/$PI_CONFIG_HOSTNAME/g" "/etc/hosts"
 /etc/init.d/hostname.sh
 
+# Install Docker
+if test "%PI_INSTALL_DOCKER%"; then
+  curl -sSL https://get.docker.com | sh
+  usermod -aG docker %PI_USERNAME%
+fi
+
+# Configure the memory split
+if test "%PI_GPU_MEMORY%" = "16" || test "%PI_GPU_MEMORY%" = "32" || test "%PI_GPU_MEMORY%" = "64" || test "%PI_GPU_MEMORY%" = "128" || test "%PI_GPU_MEMORY%" = "256"; then
+  echo "gpu_mem=%PI_GPU_MEMORY%" >> /boot/config.txt
+fi
+
 # Send email telling about this server
 curl -s --user "api:%PI_MAILGUN_API_KEY%" \
   https://api.mailgun.net/v3/%PI_MAILGUN_DOMAIN%/messages \
