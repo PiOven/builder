@@ -11,6 +11,7 @@ insert_final_newline = true
 quote_type = 'single'
 
 [*.py]
+quote_type = 'double'
 indent_size = 4
 
 [Makefile]

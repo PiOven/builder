@@ -49,6 +49,18 @@ if test "%PI_GPU_MEMORY%" = "16" || test "%PI_GPU_MEMORY%" = "32" || test "%PI_G
   echo "gpu_mem=%PI_GPU_MEMORY%" >> /boot/config.txt
 fi
 
+# Configure static IP address
+apt-get install -y python-dev python-pip
+pip install netifaces
+python /interfaces.py > /etc/network/interfaces
+cat /etc/network/interfaces
+rm /interfaces.py
+pip uninstall -y netifaces
+apt-get remove -y python-dev python-pip
+
+# Remove DHCPCD5 - https://www.raspberrypi.org/forums/viewtopic.php?t=111709
+apt-get remove -y dhcpcd5
+
 # Send email telling about this server
 if test "%PI_MAILGUN_API_KEY%" && test "%PI_MAILGUN_DOMAIN%" && test "%PI_EMAIL_ADDRESS%"; then
   curl -s --user "api:%PI_MAILGUN_API_KEY%" \

@@ -44,11 +44,11 @@ a new Pi image you can flash to a memory card (suggest
 # ToDo
 
 - [ ] Get `make setup` to prompt for the setup
-- [ ] Get working on operating systems (currently only tested on Fedora)
-- [ ] Set static IP for eth0/wlan0 (depending on which is connected)
+- [ ] Get working on other operating systems (currently only tested on Fedora)
 - [ ] Configure DDNS
-- [x] Send an email telling of the IP address of the Pi
 - [ ] Specify an IP address range
+- [x] Set static IP for eth0/wlan0 (depending on which is connected)
+- [x] Send an email telling of the IP address of the Pi
 - [x] Get `localhost` working (comment out the `::1    localhost ip6-localhost ip6-loopback` line) in `/etc/hosts`
 - [x] Option to install Docker on first boot
 - [x] Allow configuration of the GPU memory split

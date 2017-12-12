@@ -128,6 +128,7 @@ sed -i "s/%PI_GPU_MEMORY%/$PI_GPU_MEMORY/g" "${ROOT_DIR}/first_run.sh"
 chmod 755 "${ROOT_DIR}/first_run.sh"
 cp "${PI_SSH_KEY}" "${ROOT_DIR}/id_rsa.pub"
 cp -Rf ./data "${ROOT_DIR}/opt/data"
+cp -Rf ./scripts/interfaces.py "${ROOT_DIR}/interfaces.py"
 cp ./files/hosts "${ROOT_DIR}/etc/hosts"
 
 # Clean up after ourselves
