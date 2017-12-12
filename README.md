@@ -43,6 +43,7 @@ a new Pi image you can flash to a memory card (suggest
 
 # ToDo
 
+- [ ] Set a Message Of The Day
 - [ ] Get a web app set up to allow `.img` file to be done remotely
 - [ ] Get `make setup` to prompt for the setup
 - [ ] Get working on other operating systems (currently only tested on Fedora)
