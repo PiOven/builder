@@ -28,7 +28,7 @@ and IP address.
 If the Docker parameter is set, it will install Docker will the single line command and set
 the **PI_USERNAME** as part of the `docker` group. The command it runs is:
 
-  curl -sSL https://get.docker.com | sh
+    curl -sSL https://get.docker.com | sh
 
 ## OS URLs
 

@@ -14,6 +14,10 @@ quote_type = 'single'
 quote_type = 'double'
 indent_size = 4
 
+[*.md]
+indent_size = 4
+trim_trailing_whitespace = false
+
 [Makefile]
 indent_style = tab
 indent_size = 4
