@@ -50,6 +50,7 @@ if test "%PI_GPU_MEMORY%" = "16" || test "%PI_GPU_MEMORY%" = "32" || test "%PI_G
 fi
 
 # Configure static IP address
+apt-get -qq update
 apt-get install -y python-dev python-pip
 pip install netifaces
 python /interfaces.py > /etc/network/interfaces
