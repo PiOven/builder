@@ -4,11 +4,11 @@
 
 clear
 
-function color (){
+function color () {
   echo "\e[$1m$2\e[0m"
 }
 
-function extend (){
+function extend () {
   local str="$1"
   let spaces=60-${#1}
   while [ $spaces -gt 0 ]; do
@@ -18,7 +18,7 @@ function extend (){
   echo "$str"
 }
 
-function center (){
+function center () {
   local str="$1"
   let spacesLeft=(78-${#1})/2
   let spacesRight=78-spacesLeft-${#1}
@@ -35,7 +35,7 @@ function center (){
   echo "$str"
 }
 
-function sec2time (){
+function sec2time () {
   local input=$1
 
   if [ $input -lt 60 ]; then
@@ -81,8 +81,8 @@ borderEmptyLine="$borderBar                                                     
 
 # Header
 header="$borderTopLine\n$borderEmptyLine\n"
-header="$header$borderBar$(color $headerLeafColor "          .~~.   .~~.                                                         ")$borderBar\n"
-header="$header$borderBar$(color $headerLeafColor "         '. \ ' ' / .'                                                        ")$borderBar\n"
+header="$header$borderBar$(color $headerLeafColor      "          .~~.   .~~.                                                         ")$borderBar\n"
+header="$header$borderBar$(color $headerLeafColor      "         '. \ ' ' / .'                                                        ")$borderBar\n"
 header="$header$borderBar$(color $headerRaspberryColor "          .~ .~~~..~.                      _                          _       ")$borderBar\n"
 header="$header$borderBar$(color $headerRaspberryColor "         : .~.'~'.~. :     ___ ___ ___ ___| |_ ___ ___ ___ _ _    ___|_|      ")$borderBar\n"
 header="$header$borderBar$(color $headerRaspberryColor "        ~ (   ) (   ) ~   |  _| .'|_ -| . | . | -_|  _|  _| | |  | . | |      ")$borderBar\n"
@@ -95,7 +95,7 @@ header="$header$borderBar$(color $headerRaspberryColor "              '~'       
 me=$(whoami)
 
 # Greetings
-greetings="$borderBar$(color $greetingsColor "$(center "Welcome back, $me!")")$borderBar\n"
+greetings="$borderBar$(color $greetingsColor "$(center "Hello $me!")")$borderBar\n"
 greetings="$greetings$borderBar$(color $greetingsColor "$(center "$(date +"%A %d %B %Y, %T")")")$borderBar"
 
 # System information

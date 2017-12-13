@@ -131,6 +131,10 @@ cp -Rf ./data "${ROOT_DIR}/opt/data"
 cp -Rf ./scripts/interfaces.py "${ROOT_DIR}/interfaces.py"
 cp ./files/hosts "${ROOT_DIR}/etc/hosts"
 
+rm "${ROOT_DIR}/etc/motd"
+cp ./files/motd.sh "${ROOT_DIR}/etc/profile.d/motd.sh"
+chmod 755 "${ROOT_DIR}/etc/profile.d/motd.sh"
+
 # Clean up after ourselves
 umount ${BOOT_DIR} || true
 umount ${ROOT_DIR} || true
