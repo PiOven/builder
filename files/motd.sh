@@ -96,7 +96,9 @@ me=$(whoami)
 
 # Greetings
 greetings="$borderBar$(color $greetingsColor "$(center "Hello $me!")")$borderBar\n"
-greetings="$greetings$borderBar$(color $greetingsColor "$(center "$(date +"%A %d %B %Y, %T")")")$borderBar"
+greetings="$greetings$borderBar$(color $greetingsColor "$(center "$(date +"%A %d %B %Y, %T")")")$borderBar\n"
+greetings="$greetings$borderBar$(center "")$borderBar\n"
+greetings="$greetings$borderBar$(color $greetingsColor "$(center "Built with Pi Oven - www.pioven.com")")$borderBar"
 
 # System information
 
