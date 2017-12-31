@@ -20,7 +20,6 @@ ifaces = [
     "wlan1"
 ]
 
-missing = []
 values = []
 
 for iface in ifaces:
