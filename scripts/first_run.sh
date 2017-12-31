@@ -56,9 +56,12 @@ cat /etc/network/interfaces
 rm /interfaces.py
 pip uninstall -y netifaces
 apt-get remove -y python-dev python-pip
-service networking restart
 
-PI_IP_ADDRESS=$(hostname -I)
+# Reload the network interfaces - need this to get the IP address
+/etc/init.d/networking reload
+
+ipAddress=', ' read -r -a array <<< "$(hostname -I)"
+PI_IP_ADDRESS="$(extend ${array[0]})"
 
 # Remove DHCPCD5 - https://www.raspberrypi.org/forums/viewtopic.php?t=111709
 apt-get remove -y dhcpcd5
