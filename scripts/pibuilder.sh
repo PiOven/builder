@@ -124,6 +124,8 @@ sed -i "s/%PI_MAILGUN_DOMAIN%/$PI_MAILGUN_DOMAIN/g" "${ROOT_DIR}/first_run.sh"
 sed -i "s/%PI_EMAIL_ADDRESS%/$PI_EMAIL_ADDRESS/g" "${ROOT_DIR}/first_run.sh"
 sed -i "s/%PI_INSTALL_DOCKER%/$PI_INSTALL_DOCKER/g" "${ROOT_DIR}/first_run.sh"
 sed -i "s/%PI_GPU_MEMORY%/$PI_GPU_MEMORY/g" "${ROOT_DIR}/first_run.sh"
+sed -i "s/%PI_IP_ADDRESS_RANGE_START%/$PI_IP_ADDRESS_RANGE_START/g" "${ROOT_DIR}/first_run.sh"
+sed -i "s/%PI_IP_ADDRESS_RANGE_END%/$PI_IP_ADDRESS_RANGE_END/g" "${ROOT_DIR}/first_run.sh"
 
 chmod 755 "${ROOT_DIR}/first_run.sh"
 cp "${PI_SSH_KEY}" "${ROOT_DIR}/id_rsa.pub"

@@ -31,8 +31,6 @@ for file in $(ls ${DATA_DIR}); do
   PI_CONFIG_HOSTNAME=${PI_CONFIG_HOSTNAME}$(shuf ${DATA_DIR}/${file} -n 1 | sed -e "s/\s/-/g")
 done
 
-PI_IP_ADDRESS=$(hostname -I)
-
 echo "${PI_CONFIG_HOSTNAME}" > "/etc/hostname"
 OLD_HOST="raspberrypi"
 sed -i "s/$OLD_HOST/$PI_CONFIG_HOSTNAME/g" "/etc/hosts"
@@ -53,11 +51,14 @@ fi
 apt-get -qq update
 apt-get install -y python-dev python-pip
 pip install netifaces
-python /interfaces.py > /etc/network/interfaces
+PI_IP_ADDRESS_RANGE_START="%PI_IP_ADDRESS_RANGE_START%" PI_IP_ADDRESS_RANGE_END="%PI_IP_ADDRESS_RANGE_END%" python /interfaces.py > /etc/network/interfaces
 cat /etc/network/interfaces
 rm /interfaces.py
 pip uninstall -y netifaces
 apt-get remove -y python-dev python-pip
+service networking restart
+
+PI_IP_ADDRESS=$(hostname -I)
 
 # Remove DHCPCD5 - https://www.raspberrypi.org/forums/viewtopic.php?t=111709
 apt-get remove -y dhcpcd5
