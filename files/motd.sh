@@ -124,7 +124,7 @@ label1="$(extend "$login")"
 label1="$borderBar  $(color $statsLabelColor "Last Login....:") $label1$borderBar"
 
 uptime="$(sec2time $(cut -d "." -f 1 /proc/uptime))"
-uptime="$uptime ($(date -d "@"$(grep btime /proc/stat | cut -d " " -f 2) +"%d-%m-%Y %H:%M:%S"))"
+uptime="$uptime ($(date -d "@"$(grep btime /proc/stat | cut -d " " -f 2) +"%Y-%m-%d %H:%M:%S"))"
 
 label2="$(extend "$uptime")"
 label2="$borderBar  $(color $statsLabelColor "Uptime........:") $label2$borderBar"
