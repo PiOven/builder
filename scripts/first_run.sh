@@ -36,12 +36,6 @@ OLD_HOST="raspberrypi"
 sed -i "s/$OLD_HOST/$PI_CONFIG_HOSTNAME/g" "/etc/hosts"
 /etc/init.d/hostname.sh
 
-# Install Docker
-if test "%PI_INSTALL_DOCKER%"; then
-  curl -sSL https://get.docker.com | sh
-  usermod -aG docker %PI_USERNAME%
-fi
-
 # Configure the memory split
 if test "%PI_GPU_MEMORY%" = "16" || test "%PI_GPU_MEMORY%" = "32" || test "%PI_GPU_MEMORY%" = "64" || test "%PI_GPU_MEMORY%" = "128" || test "%PI_GPU_MEMORY%" = "256"; then
   echo "gpu_mem=%PI_GPU_MEMORY%" >> /boot/config.txt
@@ -51,20 +45,23 @@ fi
 apt-get -qq update
 apt-get install -y python-dev python-pip
 pip install netifaces
-PI_IP_ADDRESS_RANGE_START="%PI_IP_ADDRESS_RANGE_START%" PI_IP_ADDRESS_RANGE_END="%PI_IP_ADDRESS_RANGE_END%" python /interfaces.py > /etc/network/interfaces
+TARGET_IP="target_ip" NETWORK_CONFIG="/etc/network/interfaces" PI_IP_ADDRESS_RANGE_START="%PI_IP_ADDRESS_RANGE_START%" PI_IP_ADDRESS_RANGE_END="%PI_IP_ADDRESS_RANGE_END%" python /interfaces.py
 cat /etc/network/interfaces
 rm /interfaces.py
 pip uninstall -y netifaces
 apt-get remove -y python-dev python-pip
 
-# Reload the network interfaces - need this to get the IP address
-/etc/init.d/networking reload
-
-ipAddress=', ' read -r -a array <<< "$(hostname -I)"
-PI_IP_ADDRESS="$(extend ${array[0]})"
+PI_IP_ADDRESS=$(cat ./target_ip)
+rm ./target_ip
 
 # Remove DHCPCD5 - https://www.raspberrypi.org/forums/viewtopic.php?t=111709
 apt-get remove -y dhcpcd5
+
+# Install Docker
+if test "%PI_INSTALL_DOCKER%"; then
+  curl -sSL https://get.docker.com | sh
+  usermod -aG docker %PI_USERNAME%
+fi
 
 # Send email telling about this server
 if test "%PI_MAILGUN_API_KEY%" && test "%PI_MAILGUN_DOMAIN%" && test "%PI_EMAIL_ADDRESS%"; then

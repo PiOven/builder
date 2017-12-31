@@ -49,24 +49,29 @@ def ip_to_decimal(ip):
 
 
 ifaces = [
-    "eth0",
-    "wlan0",
-    "wlan1"
+    'eth0',
+    'wlan0',
+    'wlan1',
+    'wlp2s0'
 ]
 
 values = []
+
+target_ip_address = None
+start_ip = os.environ.get('PI_IP_ADDRESS_RANGE_START')
+end_ip = os.environ.get('PI_IP_ADDRESS_RANGE_END')
+
+if start_ip is not None and end_ip is not None:
+    target_ip_address = get_ip_address(start_ip, end_ip)
 
 for iface in ifaces:
     try:
         gateway = get_default_gateway_linux()
         addrs = netifaces.ifaddresses(iface)[netifaces.AF_INET]
 
-        start_ip = os.environ.get('PI_IP_ADDRESS_RANGE_START')
-        end_ip = os.environ.get('PI_IP_ADDRESS_RANGE_END')
-
-        if start_ip is not None and end_ip is not None:
+        if target_ip_address is not None:
             # We've got an IP address range set
-            addrs[0]['addr'] = get_ip_address(start_ip, end_ip)
+            addrs[0]['addr'] = target_ip_address
 
         values.append({
             "iface": iface,
@@ -86,34 +91,38 @@ if len(values) == 0:
 """
 Do the output
 """
-print "# interfaces(5) file used by ifup(8) and ifdown(8)"
-print ""
-print "# Please note that this file is written to be used with dhcpcd"
-print "# For static IP, consult /etc/dhcpcd.conf and \"man dhcpcd.conf\""
-print ""
-print "# Include files from /etc/network/interfaces.d:"
-print "source-directory /etc/network/interfaces.d"
-print ""
-print "auto lo"
-print "iface lo inet loopback"
-print ""
+with open(os.environ.get('NETWORK_CONFIG'), 'w') as the_file:
+    the_file.write('# interfaces(5) file used by ifup(8) and ifdown(8)\n')
+    the_file.write('\n')
+    the_file.write('# Please note that this file is written to be used with dhcpcd\n')
+    the_file.write('# For static IP, consult /etc/dhcpcd.conf and "man dhcpcd.conf"\n')
+    the_file.write('\n')
+    the_file.write('# Include files from /etc/network/interfaces.d:\n')
+    the_file.write('source-directory /etc/network/interfaces.d\n')
+    the_file.write('\n')
+    the_file.write('auto lo\n')
+    the_file.write('iface lo inet loopback\n')
+    the_file.write('\n')
 
-for value in values:
-    iface = value['iface']
-    values = value['values']
+    for value in values:
+        iface = value['iface']
+        values = value['values']
 
-    if iface.startswith("wlan"):
-        print "allow-hotplug " + iface
+        if iface.startswith('wlan'):
+            the_file.write('allow-hotplug ' + iface + '\n')
 
-    if values:
-        print "iface " + iface + " inet static"
-        print "    address " + values[0]["addr"]
-        print "    netmask " + values[0]["netmask"]
-        print "    gateway " + values[1]
-    else:
-        print "iface " + iface + " inet manual"
+        if values:
+            the_file.write('iface ' + iface + ' inet static\n')
+            the_file.write('    address ' + values[0]['addr'] + '\n')
+            the_file.write('    netmask ' + values[0]['netmask'] + '\n')
+            the_file.write('    gateway ' + values[1] + '\n')
+        else:
+            the_file.write('iface ' + iface + ' inet manual\n')
 
-    if iface.startswith("wlan"):
-        print "    wpa-conf /etc/wpa_supplicant/wpa_supplicant.conf"
+        if iface.startswith('wlan'):
+            the_file.write('    wpa-conf /etc/wpa_supplicant/wpa_supplicant.conf\n')
 
-    print ""
+        the_file.write('\n')
+
+with open(os.environ.get('TARGET_IP'), 'w') as the_file:
+    the_file.write(target_ip_address)
