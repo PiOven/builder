@@ -43,12 +43,12 @@ a new Pi image you can flash to a memory card (suggest
 
 # ToDo
 
-- [ ] Set a Message Of The Day
 - [ ] Get a web app set up to allow `.img` file to be done remotely
 - [ ] Get `make setup` to prompt for the setup
 - [ ] Get working on other operating systems (currently only tested on Fedora)
 - [ ] Configure DDNS
 - [ ] Specify an IP address range
+- [x] Set a Message Of The Day
 - [x] Set static IP for eth0/wlan0 (depending on which is connected)
 - [x] Send an email telling of the IP address of the Pi
 - [x] Get `localhost` working (comment out the `::1    localhost ip6-localhost ip6-loopback` line) in `/etc/hosts`
