@@ -121,22 +121,27 @@ fi
 label1="$(extend $(hostname))"
 label1="$borderBar  $(color $statsLabelColor "Hostname......:") $label1$borderBar"
 
-label2="$(extend "$login")"
-label2="$borderBar  $(color $statsLabelColor "Last Login....:") $label2$borderBar"
+ipAddress=', ' read -r -a array <<< "$(hostname -I)"
+
+label2="$(extend ${array[0]})"
+label2="$borderBar  $(color $statsLabelColor "IP Address....:") $label2$borderBar"
+
+label3="$(extend "$login")"
+label3="$borderBar  $(color $statsLabelColor "Last Login....:") $label3$borderBar"
 
 uptime="$(sec2time $(cut -d "." -f 1 /proc/uptime))"
 uptime="$uptime ($(date -d "@"$(grep btime /proc/stat | cut -d " " -f 2) +"%Y-%m-%d %H:%M:%S"))"
 
-label3="$(extend "$uptime")"
-label3="$borderBar  $(color $statsLabelColor "Uptime........:") $label3$borderBar"
+label4="$(extend "$uptime")"
+label4="$borderBar  $(color $statsLabelColor "Uptime........:") $label4$borderBar"
 
-label4="$(extend "$(free -m | awk 'NR==2 { printf "Total: %sMB, Used: %sMB, Free: %sMB",$2,$3,$4; }')")"
-label4="$borderBar  $(color $statsLabelColor "Memory........:") $label4$borderBar"
+label5="$(extend "$(free -m | awk 'NR==2 { printf "Total: %sMB, Used: %sMB, Free: %sMB",$2,$3,$4; }')")"
+label5="$borderBar  $(color $statsLabelColor "Memory........:") $label5$borderBar"
 
-label5="$(extend "$(df -h ~ | awk 'NR==2 { printf "Total: %sB, Used: %sB, Free: %sB",$2,$3,$4; }')")"
-label5="$borderBar  $(color $statsLabelColor "Home space....:") $label5$borderBar"
+label6="$(extend "$(df -h ~ | awk 'NR==2 { printf "Total: %sB, Used: %sB, Free: %sB",$2,$3,$4; }')")"
+label6="$borderBar  $(color $statsLabelColor "Home space....:") $label6$borderBar"
 
-stats="$label1\n$label2\n$label3\n$label4\n$label5"
+stats="$label1\n$label2\n$label3\n$label4\n$label5\n$label6"
 
 # Print motd
 echo -e "$header\n$borderEmptyLine\n$greetings\n$borderEmptyLine\n$stats\n$borderEmptyLine\n$borderBottomLine"
