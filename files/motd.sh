@@ -111,8 +111,6 @@ if [[ $loginDay == - ]]; then
   loginIP=$loginFrom
 fi
 
-spank="11-Dec-2017 13:21:48"
-
 if [[ $loginDay =~ ^[0-9]+ ]]; then
   login=$( date -d "${loginDay}-${loginMonth}-${loginYear} ${loginTime}" +'%A %d %B %Y, %T' )
 else
