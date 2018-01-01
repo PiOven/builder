@@ -52,7 +52,6 @@ a new Pi image you can flash to a memory card (suggest
 - [ ] Get a web app set up to allow `.img` file to be done remotely
 - [ ] Get `make setup` to prompt for the setup
 - [ ] Get working on other operating systems (currently only tested on Fedora)
-- [ ] Configure DDNS
 - [x] Specify an IP address range
 - [x] Set a Message Of The Day
 - [x] Set static IP for eth0/wlan0 (depending on which is connected)
