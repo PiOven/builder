@@ -17,8 +17,8 @@ Create a file at `./settings.sh` with the following variables defined:
 - **PI_EMAIL_ADDRESS**: Email address to send to (optional)
 - **PI_GPU_MEMORY**: The value of the memory split - can be one of `16`, `32`, `64`, `128`, `256` (optional)
 - **PI_INSTALL_DOCKER**: Whether to install [Docker](http://docker.com) or not (optional)
-- **PI_IP_ADDRESS_RANGE_START**: Will search for a free IP address in this range 
-- **PI_IP_ADDRESS_RANGE_END**: End of the IP address range
+- **PI_IP_ADDRESS_RANGE_START**: Will search for a free IP address in this range (optional, but recommended)
+- **PI_IP_ADDRESS_RANGE_END**: End of the IP address range (optional, but recommended)
 
 The Pi will be given a static IP (which will be the same as is first assigned
 via DHCP) and the hostname will become the `$PI_HOSTNAME` followed by the IP
@@ -31,10 +31,6 @@ If the Docker parameter is set, it will install Docker will the single line comm
 the **PI_USERNAME** as part of the `docker` group. The command it runs is:
 
     curl -sSL https://get.docker.com | sh
-    
-> You will probably have to restart the Pi after it's first run. This is due to the `/etc/rc.local`
-> file not being able to handle restarting services in there (if anyone know's how to do this, 
-> please open a PR).
 
 ## OS URLs
 
@@ -45,7 +41,17 @@ the **PI_USERNAME** as part of the `docker` group. The command it runs is:
 
 Once you have got your settings, hit `sudo make build`. This will create
 a new Pi image you can flash to a memory card (suggest
-[Etcher](http://etcher.io))
+[Etcher](http://etcher.io)).
+
+When you power-up the Pi, which will take between 30 seconds and 5 minutes 
+(the longest part is installing Docker), you will eventually be able to connect 
+to the Pi with the credentials you provided. If you configured the email, it
+will send you an email when it's all configured.
+    
+> If you set an IP address range, you will probably have to restart the Pi after 
+> the first run. This is due to the `/etc/rc.local` file not being able to handle
+> restarting services in there (if anyone know's how to do this, please open a PR).
+> Before the restart, the Pi will have the IP address initially set by DHCP.
 
 # ToDo
 
