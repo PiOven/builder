@@ -116,6 +116,7 @@ with open(os.environ.get('NETWORK_CONFIG'), 'w') as the_file:
             the_file.write('    address ' + values[0]['addr'] + '\n')
             the_file.write('    netmask ' + values[0]['netmask'] + '\n')
             the_file.write('    gateway ' + values[1] + '\n')
+            the_file.write('    gateway dns-nameservers 8.8.8.8 8.8.4.4\n')
         else:
             the_file.write('iface ' + iface + ' inet manual\n')
 
