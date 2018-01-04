@@ -58,7 +58,7 @@ rm ./target_ip
 apt-get remove -y dhcpcd5
 
 # Install Docker
-if test "%PI_INSTALL_DOCKER%"; then
+if "%PI_INSTALL_DOCKER%" -eq "true"; then
   curl -sSL https://get.docker.com | sh
   usermod -aG docker %PI_USERNAME%
 fi
