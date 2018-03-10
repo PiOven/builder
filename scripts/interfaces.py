@@ -28,11 +28,12 @@ def get_ip_address(start_ip, end_ip):
     for current_ip_decimal in range(start_ip_decimal, end_ip_decimal + 1):
         current_ip = decimal_to_ip(current_ip_decimal)
 
-        try:
-            # The IP is in use
-            socket.gethostbyaddr(current_ip)
+        result = os.system('ping -c 1 ' + current_ip)
+
+        if result == 0:
+            # IP in use
             continue
-        except socket.herror:
+        else:
             # The IP address is free
             target_ip = current_ip
             break
@@ -116,7 +117,7 @@ with open(os.environ.get('NETWORK_CONFIG'), 'w') as the_file:
             the_file.write('    address ' + values[0]['addr'] + '\n')
             the_file.write('    netmask ' + values[0]['netmask'] + '\n')
             the_file.write('    gateway ' + values[1] + '\n')
-            the_file.write('    gateway dns-nameservers 8.8.8.8 8.8.4.4\n') # Use Google for DNS
+            the_file.write('    gateway dns-nameservers 8.8.8.8 8.8.4.4\n')  # Use Google for DNS
         else:
             the_file.write('iface ' + iface + ' inet manual\n')
 
