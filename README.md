@@ -4,6 +4,17 @@ A script to automate building of a configured Raspberry Pi
 
 # Config
 
+The recommended way is to use the NodeJS script to build the `./settings.sh`
+file for you. This will ask you various questions about how you want your
+Pis setup.
+
+```bash
+npm install # Only needs to be run once
+make setup
+```
+
+## The settings
+
 Create a file at `./settings.sh` with the following variables defined:
 
 - **PI_WIFI_SSID**: The SSID WiFi
