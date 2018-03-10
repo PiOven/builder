@@ -55,9 +55,10 @@ will send you an email when it's all configured.
 
 # ToDo
 
+- [ ] Cronjob to do updates
 - [ ] Get a web app set up to allow `.img` file to be done remotely
-- [x] Get `make setup` to prompt for the setup
 - [ ] Get working on other operating systems (currently only tested on Fedora)
+- [x] Get `make setup` to prompt for the setup
 - [x] Specify an IP address range
 - [x] Set a Message Of The Day
 - [x] Set static IP for eth0/wlan0 (depending on which is connected)
