@@ -5,5 +5,5 @@ build:
 .PHONY: build
 
 setup:
-	node ./scripts/setup
+	node ./scripts/setup.js
 .PHONY: setup

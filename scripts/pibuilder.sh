@@ -47,7 +47,8 @@ mkdir -p ${BOOT_DIR} ${ROOT_DIR}
 
 if [ ! -f "${SETTINGS_FILE}" ]; then
   # Running setup first
-  make setup
+  echo "Please add configuration to ${SETTINGS_FILE}"
+  exit 1
 fi
 
 # Load up the variables
@@ -100,25 +101,46 @@ sleep 5
 # Enable SSH
 touch ${BOOT_DIR}/ssh
 
-# Configure WIFI
-if ! (grep -q "ssid=" "${ROOT_DIR}/etc/wpa_supplicant/wpa_supplicant.conf"); then
-  printf "\nnetwork={\n  ssid=\"%s\"\n  psk=\"%s\"\n}\n" ${PI_WIFI_SSID} ${PI_WIFI_PASS} >> ${ROOT_DIR}/etc/wpa_supplicant/wpa_supplicant.conf
+# Configure WiFi - if required
+if [[ "${PI_WIFI_SSID}" && "${PI_WIFI_PASS}" ]]; then
+  if ! (grep -q "ssid=" "${ROOT_DIR}/etc/wpa_supplicant/wpa_supplicant.conf"); then
+    printf "\nnetwork={\n  ssid=\"%s\"\n  psk=\"%s\"\n}\n" ${PI_WIFI_SSID} ${PI_WIFI_PASS} >> ${ROOT_DIR}/etc/wpa_supplicant/wpa_supplicant.conf
+  fi
 fi
 
 # Set the first boot script
-if ! (grep -q "./scripts/setup.sh" "${ROOT_DIR}/etc/rc.local"); then
+if ! (grep -q "./scripts/first_run.sh" "${ROOT_DIR}/etc/rc.local"); then
   sed -i '$ d' "${ROOT_DIR}/etc/rc.local"
-  printf "if [ -f /setup.sh ]; then\n  printf 'Setting up the Pi\n'\n  sh /setup.sh\nfi\n\n  printf 'Pi setup\n'\nexit 0" >> "${ROOT_DIR}/etc/rc.local"
+  printf "if [ -f /first_run.sh ]; then\n  printf 'Setting up the Pi\n'\n  sh /first_run.sh\nfi\n\n  printf 'Pi setup\n'\nexit 0" >> "${ROOT_DIR}/etc/rc.local"
 fi
 
-cp ./scripts/setup.sh "${ROOT_DIR}/setup.sh"
-sed -i "s/%PI_HOSTNAME%/$PI_HOSTNAME/g" "${ROOT_DIR}/setup.sh"
-sed -i "s/%PI_USERNAME%/$PI_USERNAME/g" "${ROOT_DIR}/setup.sh"
-sed -i "s/%PI_PASSWORD%/$PI_PASSWORD/g" "${ROOT_DIR}/setup.sh"
-sed -i "s/%PI_PASSWORD%/$PI_WIFI_SSID/g" "${ROOT_DIR}/setup.sh"
-chmod 755 "${ROOT_DIR}/setup.sh"
-cp "${PI_SSH_KEY}" "${ROOT_DIR}/id_rsa.pub"
+cp ./scripts/first_run.sh "${ROOT_DIR}/first_run.sh"
+sed -i "s/%PI_HOSTNAME%/$PI_HOSTNAME/g" "${ROOT_DIR}/first_run.sh"
+sed -i "s/%PI_USERNAME%/$PI_USERNAME/g" "${ROOT_DIR}/first_run.sh"
+sed -i "s/%PI_PASSWORD%/$PI_PASSWORD/g" "${ROOT_DIR}/first_run.sh"
+sed -i "s/%PI_WIFI_SSID%/$PI_WIFI_SSID/g" "${ROOT_DIR}/first_run.sh"
+sed -i "s/%PI_MAILGUN_API_KEY%/$PI_MAILGUN_API_KEY/g" "${ROOT_DIR}/first_run.sh"
+sed -i "s/%PI_MAILGUN_DOMAIN%/$PI_MAILGUN_DOMAIN/g" "${ROOT_DIR}/first_run.sh"
+sed -i "s/%PI_EMAIL_ADDRESS%/$PI_EMAIL_ADDRESS/g" "${ROOT_DIR}/first_run.sh"
+sed -i "s/%PI_INSTALL_DOCKER%/$PI_INSTALL_DOCKER/g" "${ROOT_DIR}/first_run.sh"
+sed -i "s/%PI_GPU_MEMORY%/$PI_GPU_MEMORY/g" "${ROOT_DIR}/first_run.sh"
+sed -i "s/%PI_IP_ADDRESS_RANGE_START%/$PI_IP_ADDRESS_RANGE_START/g" "${ROOT_DIR}/first_run.sh"
+sed -i "s/%PI_IP_ADDRESS_RANGE_END%/$PI_IP_ADDRESS_RANGE_END/g" "${ROOT_DIR}/first_run.sh"
 
+chmod 755 "${ROOT_DIR}/first_run.sh"
+cp "${PI_SSH_KEY}" "${ROOT_DIR}/id_rsa.pub"
+cp -Rf ./data "${ROOT_DIR}/opt/data"
+cp -Rf ./scripts/interfaces.py "${ROOT_DIR}/interfaces.py"
+cp ./files/hosts "${ROOT_DIR}/etc/hosts"
+
+cp ./files/update.sh "${ROOT_DIR}/opt/update"
+chmod 755 "${ROOT_DIR}/opt/update"
+
+rm "${ROOT_DIR}/etc/motd"
+cp ./files/motd.sh "${ROOT_DIR}/etc/profile.d/motd.sh"
+chmod 755 "${ROOT_DIR}/etc/profile.d/motd.sh"
+
+# Clean up after ourselves
 umount ${BOOT_DIR} || true
 umount ${ROOT_DIR} || true
 
