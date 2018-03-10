@@ -77,9 +77,6 @@ const Validate = {
         return thenable
           .then(() => rule(input))
           .then(isValid => {
-            console.log({
-              isValid
-            });
             if (isValid !== true) {
               return Promise.reject(isValid);
             }
@@ -234,7 +231,7 @@ inquirer.prompt(questions)
       .filter(key => /^_/.test(key) === false)
       .filter(key => answers[key] !== undefined)
       .forEach(key => {
-        settings.push(`${key}=${answers[key]}`);
+        settings.push(`${key}="${answers[key]}"`);
       });
 
     /* Add trailing line */
