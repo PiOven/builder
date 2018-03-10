@@ -199,14 +199,14 @@ const questions = [{
   }],
 }, {
   type: 'input',
-  name: 'PI_MAILGUN_API_KEY',
-  message: 'MailGun API key',
+  name: 'PI_MAILGUN_DOMAIN',
+  message: 'MailGun domain',
   when: answers => answers._emailConfirm,
   validate: Validate.required,
 }, {
   type: 'input',
-  name: 'PI_MAILGUN_DOMAIN',
-  message: 'MailGun domain',
+  name: 'PI_MAILGUN_API_KEY',
+  message: 'MailGun API key',
   when: answers => answers._emailConfirm,
   validate: Validate.required,
 }, {
@@ -236,6 +236,9 @@ inquirer.prompt(questions)
       .forEach(key => {
         settings.push(`${key}=${answers[key]}`);
       });
+
+    /* Add trailing line */
+    settings.push('');
 
     const filePath = path.join(__dirname, '..', 'settings.sh');
     const data = settings.join('\n');
