@@ -133,6 +133,9 @@ cp -Rf ./data "${ROOT_DIR}/opt/data"
 cp -Rf ./scripts/interfaces.py "${ROOT_DIR}/interfaces.py"
 cp ./files/hosts "${ROOT_DIR}/etc/hosts"
 
+cp ./files/update.sh "${ROOT_DIR}/opt/update"
+chmod 755 "${ROOT_DIR}/opt/update"
+
 rm "${ROOT_DIR}/etc/motd"
 cp ./files/motd.sh "${ROOT_DIR}/etc/profile.d/motd.sh"
 chmod 755 "${ROOT_DIR}/etc/profile.d/motd.sh"
