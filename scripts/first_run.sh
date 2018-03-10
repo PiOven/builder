@@ -25,11 +25,9 @@ usermod -u 1000 %PI_USERNAME%
 groupmod -g 1000 %PI_USERNAME%
 
 # Configure hostname
-PI_CONFIG_HOSTNAME="%PI_HOSTNAME%"
-for file in $(ls ${DATA_DIR}); do
-  PI_CONFIG_HOSTNAME="${PI_CONFIG_HOSTNAME}-"
-  PI_CONFIG_HOSTNAME=${PI_CONFIG_HOSTNAME}$(shuf ${DATA_DIR}/${file} -n 1 | sed -e "s/\s/-/g")
-done
+randomWord1=$(shuf ${DATA_DIR}/words.txt -n 1 | sed -e "s/\s/-/g")
+randomWord2=$(shuf ${DATA_DIR}/words.txt -n 1 | sed -e "s/\s/-/g")
+PI_CONFIG_HOSTNAME="%PI_HOSTNAME%-${randomWord1}-${randomWord2}"
 
 echo "${PI_CONFIG_HOSTNAME}" > "/etc/hostname"
 OLD_HOST="raspberrypi"
