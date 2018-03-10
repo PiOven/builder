@@ -56,7 +56,7 @@ will send you an email when it's all configured.
 # ToDo
 
 - [ ] Get a web app set up to allow `.img` file to be done remotely
-- [ ] Get `make setup` to prompt for the setup
+- [x] Get `make setup` to prompt for the setup
 - [ ] Get working on other operating systems (currently only tested on Fedora)
 - [x] Specify an IP address range
 - [x] Set a Message Of The Day
