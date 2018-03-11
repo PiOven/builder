@@ -66,10 +66,10 @@ will send you an email when it's all configured.
 
 # ToDo
 
-- [ ] Cronjob to do updates
 - [ ] Get a web app set up to allow `.img` file to be done remotely
 - [ ] Get working on other operating systems (currently only tested on Fedora)
 - [ ] Watch for changes in a Git repo to allow automated deployments to the Pi 
+- [x] Cronjob to do updates
 - [x] Get `make setup` to prompt for the setup
 - [x] Specify an IP address range
 - [x] Set a Message Of The Day
