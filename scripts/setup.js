@@ -12,6 +12,7 @@ const path = require('path');
 /* Third-party modules */
 const inquirer = require('inquirer');
 const inquirerFilePath = require('inquirer-file-path');
+const ipToInt = require('ip-to-int');
 const validateEmail = require('email-validator');
 const validateIp = require('validate-ip');
 
@@ -71,11 +72,32 @@ const Validate = {
     return 'Invalid IP address';
   },
 
-  multi: rules => input => {
+  ipGreaterThan: key => (input, values) => {
+    const start = values[key];
+
+    if (!input) {
+      if (start) {
+        return 'Start range is set - end range is required';
+      }
+
+      return true;
+    }
+
+    const startInt = ipToInt(start).toInt();
+    const endInt = ipToInt(input).toInt();
+
+    if (startInt >= endInt) {
+      return 'End IP must be greater than start IP';
+    }
+
+    return true;
+  },
+
+  multi: rules => (input, values) => {
     return rules
       .reduce((thenable, rule) => {
         return thenable
-          .then(() => rule(input))
+          .then(() => rule(input, values))
           .then(isValid => {
             if (isValid !== true) {
               return Promise.reject(isValid);
@@ -153,7 +175,11 @@ const questions = [{
   type: 'input',
   name: 'PI_IP_ADDRESS_RANGE_END',
   message: 'IP address range end',
-  validate: Validate.isIp,
+  when: answers => !!answers.PI_IP_ADDRESS_RANGE_START,
+  validate: Validate.multi([
+    Validate.isIp,
+    Validate.ipGreaterThan('PI_IP_ADDRESS_RANGE_START'),
+  ]),
 }, {
   type: 'list',
   name: 'PI_INSTALL_DOCKER',

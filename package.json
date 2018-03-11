@@ -21,6 +21,7 @@
     "email-validator": "^1.1.1",
     "inquirer": "^3.3.0",
     "inquirer-file-path": "^1.0.0",
+    "ip-to-int": "^0.3.1",
     "validate-ip": "^1.0.1"
   },
   "devDependencies": {
