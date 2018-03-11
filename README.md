@@ -4,9 +4,10 @@ A script to automate headless building of a configured Raspberry Pi
 
 # Features
 
-- Use any OS that you have the `.img` for
-- Secures the Pi by removing the `pi` username and logs in with an SSH key or random password
-- Allow creation of any number of identical devices
+- Use any version of Raspbian that you have the `.img` for
+- Secure SSH access with an SSH key or random 32 character password
+- Secures the Pi by removing the `pi` username
+- Image generated is completely atomic and can be flashed to one Pi or a thousand 
 - Configure networking - can connect to a WiFi and set a static IP address
 - Install Docker to the Pi
 - Configure the GPU networking - reduce allocation of video memory if using as a headless server
@@ -14,6 +15,8 @@ A script to automate headless building of a configured Raspberry Pi
 - Checks for and installs software updates on a daily basis
 
 # Config
+
+> Requires NodeJS v4 or above
 
 The recommended way is to use the NodeJS script to build the `./settings.sh`
 file for you. This will ask you various questions about how you want your
