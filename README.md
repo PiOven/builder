@@ -1,6 +1,17 @@
 # Pi Builder
 
-A script to automate building of a configured Raspberry Pi
+A script to automate headless building of a configured Raspberry Pi
+
+# Features
+
+- Use any OS that you have the `.img` for
+- Secures the Pi by removing the `pi` username and logs in with an SSH key or random password
+- Allow creation of any number of identical devices
+- Configure networking - can connect to a WiFi and set a static IP address
+- Install Docker to the Pi
+- Configure the GPU networking - reduce allocation of video memory if using as a headless server
+- Sends an email when the Pi is set up
+- Checks for and installs software updates on a daily basis
 
 # Config
 
@@ -58,7 +69,7 @@ When you power-up the Pi, which will take between 30 seconds and 5 minutes
 (the longest part is installing Docker), you will eventually be able to connect 
 to the Pi with the credentials you provided. If you configured the email, it
 will send you an email when it's all configured.
-    
+
 > If you set an IP address range, you will probably have to restart the Pi after 
 > the first run. This is due to the `/etc/rc.local` file not being able to handle
 > restarting services in there (if anyone know's how to do this, please open a PR).
@@ -66,10 +77,10 @@ will send you an email when it's all configured.
 
 # ToDo
 
-- [ ] Cronjob to do updates
 - [ ] Get a web app set up to allow `.img` file to be done remotely
 - [ ] Get working on other operating systems (currently only tested on Fedora)
 - [ ] Watch for changes in a Git repo to allow automated deployments to the Pi 
+- [x] Cronjob to do updates
 - [x] Get `make setup` to prompt for the setup
 - [x] Specify an IP address range
 - [x] Set a Message Of The Day
