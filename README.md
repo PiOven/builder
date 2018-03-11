@@ -1,6 +1,6 @@
 # Pi Builder
 
-A script to automate headless building of a configured Raspberry Pi
+A script to automate the headless building of a configured Raspberry Pi
 
 # Features
 
