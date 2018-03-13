@@ -57,7 +57,7 @@ apt-get remove -y dhcpcd5
 
 # Install Docker
 if "%PI_INSTALL_DOCKER%" -eq "true"; then
-  curl -sSL https://get.docker.com | sh
+  curl -sSL https://get.docker.com | CHANNEL=stable sh
   usermod -aG docker %PI_USERNAME%
 fi
 
