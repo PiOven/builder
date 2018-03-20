@@ -114,6 +114,7 @@ with open(os.environ.get('NETWORK_CONFIG'), 'w') as the_file:
 
         if values:
             the_file.write('iface ' + iface + ' inet static\n')
+            the_file.write('    wireless-power off\n')
             the_file.write('    address ' + values[0]['addr'] + '\n')
             the_file.write('    netmask ' + values[0]['netmask'] + '\n')
             the_file.write('    gateway ' + values[1] + '\n')
