@@ -6,6 +6,7 @@ A script to automate the headless building of a configured Raspberry Pi
 
 - Use any version of Raspbian that you have the `.img` for
 - Secure SSH access with an SSH key or random 32 character password
+- Select an existing SSH key or create one during setup
 - Secures the Pi by removing the `pi` username
 - Image generated is completely atomic and can be flashed to one Pi or a thousand 
 - Configure networking - can connect to a WiFi and set a static IP address
