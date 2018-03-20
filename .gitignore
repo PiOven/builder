@@ -7,3 +7,5 @@ cache
 node_modules
 
 settings.sh
+
+ssh-keys
