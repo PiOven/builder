@@ -13,6 +13,7 @@ A script to automate the headless building of a configured Raspberry Pi
 - Configure the GPU networking - reduce allocation of video memory if using as a headless server
 - Sends an email when the Pi is set up
 - Checks for and installs software updates on a daily basis
+- Disables WiFi power management - the WiFi is always-on
 
 # Config
 
