@@ -4,6 +4,7 @@
   "description": "A script to automate building of a configured Raspberry Pi",
   "main": "index.js",
   "scripts": {
+    "postversion": "git push --tag && git push",
     "test": "npm run -s test:lint",
     "test:lint": "semistandard ./"
   },
