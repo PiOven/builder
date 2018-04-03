@@ -5,6 +5,8 @@ all: setup build
 
 build:
 	make docker-run CMD="sh ./scripts/pibuilder.sh"
+
+	@echo "Now write ./cache/os.img to an SD card"
 .PHONY: build
 
 docker-build:
@@ -30,4 +32,6 @@ docker-run:
 
 setup:
 	make docker-run CMD="node ./scripts/setup.js" RUN_USER=1000
+
+	@echo "Now run 'make build' to configure the image"
 .PHONY: setup
