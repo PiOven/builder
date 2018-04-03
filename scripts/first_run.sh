@@ -43,7 +43,14 @@ fi
 apt-get -qq update
 apt-get install -y python-dev python-pip
 pip install netifaces
-TARGET_IP="target_ip" NETWORK_CONFIG="/etc/network/interfaces" PI_IP_ADDRESS_RANGE_START="%PI_IP_ADDRESS_RANGE_START%" PI_IP_ADDRESS_RANGE_END="%PI_IP_ADDRESS_RANGE_END%" python /interfaces.py
+
+export TARGET_IP="target_ip"
+export NETWORK_CONFIG="/etc/network/interfaces"
+export PI_IP_ADDRESS_RANGE_START="%PI_IP_ADDRESS_RANGE_START%"
+export PI_IP_ADDRESS_RANGE_END="%PI_IP_ADDRESS_RANGE_END%"
+export PI_DNS_ADDRESS="%PI_DNS_ADDRESS%"
+python /interfaces.py
+
 cat /etc/network/interfaces
 rm /interfaces.py
 pip uninstall -y netifaces
