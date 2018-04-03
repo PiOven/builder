@@ -61,6 +61,7 @@ values = []
 target_ip_address = None
 start_ip = os.environ.get('PI_IP_ADDRESS_RANGE_START')
 end_ip = os.environ.get('PI_IP_ADDRESS_RANGE_END')
+dns_address = os.environ.get('PI_DNS_ADDRESS')
 
 if start_ip is not None and end_ip is not None:
     target_ip_address = get_ip_address(start_ip, end_ip)
@@ -118,7 +119,7 @@ with open(os.environ.get('NETWORK_CONFIG'), 'w') as the_file:
             the_file.write('    address ' + values[0]['addr'] + '\n')
             the_file.write('    netmask ' + values[0]['netmask'] + '\n')
             the_file.write('    gateway ' + values[1] + '\n')
-            the_file.write('    gateway dns-nameservers 8.8.8.8 8.8.4.4\n')  # Use Google for DNS
+            the_file.write('    gateway dns-nameservers ' + dns_address + '\n')
         else:
             the_file.write('iface ' + iface + ' inet manual\n')
 

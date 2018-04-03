@@ -195,6 +195,20 @@ const questions = [{
   ]),
 }, {
   type: 'list',
+  name: 'PI_DNS_ADDRESS',
+  message: 'Which DNS server do you want to use?',
+  choices: [{
+    name: 'CloudFlare',
+    value: '1.1.1.1 1.0.0.1',
+  }, {
+    name: 'Google',
+    value: '8.8.8.8 8.8.4.4'
+  }, {
+    name: 'OpenDNS',
+    value: '208.67.222.222 208.67.220.220'
+  }]
+}, {
+  type: 'list',
   name: 'PI_INSTALL_DOCKER',
   message: 'Do you want to install Docker?',
   choices: [{
