@@ -6,7 +6,9 @@
   "scripts": {
     "postversion": "git push --tag && git push",
     "test": "npm run -s test:lint",
-    "test:lint": "semistandard ./"
+    "test:lint": "npm run -s test:lint:js && npm run -s test:lint:python",
+    "test:lint:js": "semistandard ./**/*.js",
+    "test:lint:python": "pylint ./**/*.py"
   },
   "repository": {
     "type": "git",
@@ -18,6 +20,7 @@
     "url": "https://github.com/riggerthegeek/pibuilder/issues"
   },
   "homepage": "https://github.com/riggerthegeek/pibuilder#readme",
+  "private": true,
   "dependencies": {
     "email-validator": "^1.1.1",
     "fs.extra": "^1.3.2",
