@@ -1,9 +1,37 @@
+DOCKER_CONTAINER ?= riggerthegeek/pibuilder
+RUN_USER ?= 0
+
 all: setup build
 
 build:
-	sh ./scripts/pibuilder.sh
+	make docker-run CMD="sh ./scripts/pibuilder.sh"
+
+	@echo "Now write ./cache/os.img to an SD card"
 .PHONY: build
 
+docker-build:
+	docker build -t ${DOCKER_CONTAINER} .
+.PHONY: docker-build
+
+docker-run:
+	touch settings.sh
+	mkdir -p ./cache
+	mkdir -p ./ssh-keys
+	docker run \
+		-it \
+		--privileged \
+		--rm \
+		-v "${PWD}/settings.sh:/opt/pibuilder/settings.sh" \
+		-v "${PWD}/cache:/opt/pibuilder/cache" \
+		-v "${PWD}/ssh-keys:/ssh-keys" \
+		-v "${PWD}/scripts:/opt/pibuilder/scripts" \
+		-u ${RUN_USER} \
+		${DOCKER_CONTAINER} \
+		${CMD}
+.PHONY: docker-run
+
 setup:
-	node ./scripts/setup.js
+	make docker-run CMD="node ./scripts/setup.js" RUN_USER=1000
+
+	@echo "Now run 'make build' to configure the image"
 .PHONY: setup

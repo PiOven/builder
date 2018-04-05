@@ -13,13 +13,16 @@ const fs = require('fs.extra');
 const inquirer = require('inquirer');
 const inquirerFilePath = require('inquirer-file-path');
 const ipToInt = require('ip-to-int');
-const keyGen = require('ssh-keygen')
+const keyGen = require('ssh-keygen');
 const validateEmail = require('email-validator');
 const validateIp = require('validate-ip');
 
 /* Files */
 
 inquirer.registerPrompt('filePath', inquirerFilePath);
+
+const keyDir = process.env.SSH_KEY_DIR || path.join(__dirname, '..', 'ssh-keys');
+fs.mkdirpSync(keyDir);
 
 const Validate = {
   integer: input => {
@@ -174,7 +177,7 @@ const questions = [{
   when: answers => answers._useWifi,
   validate: Validate.required,
 }, {
-  type: 'password',
+  type: 'input',
   name: 'PI_WIFI_PASS',
   message: 'WiFi Password',
   when: answers => answers._useWifi,
@@ -280,9 +283,6 @@ inquirer.prompt(questions)
       return answers;
     }
 
-    const keyDir = path.join(__dirname, '..', 'ssh-keys');
-    fs.mkdirpSync(keyDir);
-
     const location = path.join(keyDir, answers.PI_HOSTNAME);
 
     return new Promise((resolve, reject) => {
@@ -322,4 +322,11 @@ inquirer.prompt(questions)
     const data = settings.join('\n');
 
     fs.writeFileSync(filePath, data, 'utf8');
+
+    console.log('Setup completed successfully');
+  })
+  .catch((err) => {
+    console.log('Setup errored');
+    console.log(err.stack || err);
+    process.exit(1);
   });

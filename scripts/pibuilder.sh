@@ -128,8 +128,6 @@ sed -i "s/%PI_IP_ADDRESS_RANGE_START%/$PI_IP_ADDRESS_RANGE_START/g" "${ROOT_DIR}
 sed -i "s/%PI_IP_ADDRESS_RANGE_END%/$PI_IP_ADDRESS_RANGE_END/g" "${ROOT_DIR}/first_run.sh"
 sed -i "s/%PI_DNS_ADDRESS%/$PI_DNS_ADDRESS/g" "${ROOT_DIR}/first_run.sh"
 
-cat "${ROOT_DIR}/first_run.sh"
-
 chmod 755 "${ROOT_DIR}/first_run.sh"
 cp "${PI_SSH_KEY}" "${ROOT_DIR}/id_rsa.pub"
 cp -Rf ./data "${ROOT_DIR}/opt/data"

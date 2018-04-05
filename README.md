@@ -18,7 +18,7 @@ A script to automate the headless building of a configured Raspberry Pi
 
 # Config
 
-> Requires NodeJS v4 or above
+> Requires Docker v1.17 or above
 
 The recommended way is to use the NodeJS script to build the `./settings.sh`
 file for you. This will ask you various questions about how you want your
@@ -67,8 +67,7 @@ the **PI_USERNAME** as part of the `docker` group. The command it runs is:
 # Run
 
 Once you have got your settings, hit `sudo make build`. This will create
-a new Pi image you can flash to a memory card (suggest
-[Etcher](http://etcher.io)).
+a new Pi image you can flash to a memory card (suggest [Etcher](http://etcher.io)).
 
 When you power-up the Pi, which will take between 30 seconds and 5 minutes 
 (the longest part is installing Docker), you will eventually be able to connect 
@@ -83,8 +82,8 @@ will send you an email when it's all configured.
 # ToDo
 
 - [ ] Get a web app set up to allow `.img` file to be done remotely
-- [ ] Get working on other operating systems (currently only tested on Fedora)
 - [ ] Watch for changes in a Git repo to allow automated deployments to the Pi 
+- [x] Get working on other operating systems (currently only tested on Fedora)
 - [x] Cronjob to do updates
 - [x] Get `make setup` to prompt for the setup
 - [x] Specify an IP address range
