@@ -3,9 +3,5 @@
 .idea
 .DS_Store
 Thumbs.db
-cache
 node_modules
-
-settings.sh
-
-ssh-keys
+dist

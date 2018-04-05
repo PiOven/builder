@@ -2,6 +2,21 @@
 
 A script to automate the headless building of a configured Raspberry Pi
 
+# Quick Start
+
+```bash
+make setup
+make build
+```
+
+When this has run, write the `./dist/cache/os.img` file to an SD card using
+[Etcher](http://etcher.io) and put in a Raspberry Pi.
+
+This will take up-to 5 mins to boot-up and you will have a fully-configured
+Raspberry Pi. You can use this image across multiple Raspberry Pis to get an
+identical setup - **IF USING A STATIC IP ADDRESS, ONCE SETUP YOU WILL NEED 
+TO REBOOT THE PI**
+
 # Features
 
 - Use any version of Raspbian that you have the `.img` for
@@ -20,12 +35,11 @@ A script to automate the headless building of a configured Raspberry Pi
 
 > Requires Docker v1.17 or above
 
-The recommended way is to use the NodeJS script to build the `./settings.sh`
+The recommended way is to use the NodeJS script to build the `settings.sh`
 file for you. This will ask you various questions about how you want your
 Pis setup.
 
 ```bash
-npm install # Only needs to be run once
 make setup
 ```
 
@@ -66,7 +80,7 @@ the **PI_USERNAME** as part of the `docker` group. The command it runs is:
 
 # Run
 
-Once you have got your settings, hit `sudo make build`. This will create
+Once you have got your settings, hit `make build`. This will create
 a new Pi image you can flash to a memory card (suggest [Etcher](http://etcher.io)).
 
 When you power-up the Pi, which will take between 30 seconds and 5 minutes 
@@ -93,3 +107,9 @@ will send you an email when it's all configured.
 - [x] Get `localhost` working (comment out the `::1    localhost ip6-localhost ip6-loopback` line) in `/etc/hosts`
 - [x] Option to install Docker on first boot
 - [x] Allow configuration of the GPU memory split
+
+# Troubleshooting
+
+## `mount: could not find any device /dev/loop#Bad address` during `make build`
+
+This appears to be an intermittent error. Run it again and it should work ok.
