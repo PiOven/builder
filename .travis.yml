@@ -1,0 +1,23 @@
+language: node_js
+
+node_js:
+- '8'
+
+sudo: required
+
+services:
+- docker
+
+before_install:
+- date
+- docker login --username=${DOCKER_USER} --password=${DOCKER_PASS}
+
+script: make test docker-build
+
+deploy:
+  provider: script
+  script: make publish
+  skip_cleanup: true
+  on:
+    tags: true
+  repo: riggerthegeek/pibuilder
