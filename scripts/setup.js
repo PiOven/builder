@@ -50,13 +50,13 @@ const Validate = {
     });
   }).then(stats => {
     if (!stats.isFile()) {
-      return Promise.reject(`${input} is not a file`);
+      return Promise.reject(new Error(`${input} is not a file`));
     }
 
     return true;
   }).catch(err => {
-    if (err.code === "ENOENT") {
-      return Promise.reject(`File ${input} does not exist`);
+    if (err.code === 'ENOENT') {
+      return Promise.reject(new Error(`File ${input} does not exist`));
     }
 
     return Promise.reject(err);
@@ -112,7 +112,7 @@ const Validate = {
       }, Promise.resolve());
   },
 
-  required: input => input !== '' ? true : 'Required field',
+  required: input => input !== '' ? true : 'Required field'
 };
 
 function getCurrentDrive () {
@@ -130,63 +130,63 @@ const questions = [{
   name: 'PI_OS',
   default: 'https://downloads.raspberrypi.org/raspbian_lite/images/raspbian_lite-2017-07-05/2017-07-05-raspbian-jessie-lite.zip',
   message: 'Operating System URL',
-  validate: Validate.required,
+  validate: Validate.required
 }, {
   type: 'input',
   name: 'PI_USERNAME',
   message: 'Username',
-  validate: Validate.required,
+  validate: Validate.required
 }, {
   type: 'input',
   name: 'PI_HOSTNAME',
   message: 'Hostname',
   default: input => input.PI_USERNAME,
-  validate: Validate.required,
+  validate: Validate.required
 }, {
   type: 'list',
   name: '_generateKey',
   message: 'What SSH key do you want to use?',
   choices: [{
     name: 'Generate a new one',
-    value: true,
+    value: true
   }, {
     name: 'Use an existing one',
-    value: false,
-  }],
+    value: false
+  }]
 }, {
   type: 'filePath',
   name: 'PI_SSH_KEY',
   message: 'Public SSH key path',
   when: answers => !answers._generateKey,
-  basePath: getCurrentDrive(),
+  basePath: getCurrentDrive()
 }, {
   type: 'list',
   name: '_useWifi',
   message: 'Do you want to connect via WiFi?',
   choices: [{
     name: 'Yes',
-    value: true,
+    value: true
   }, {
     name: 'No',
-    value: false,
-  }],
+    value: false
+  }]
 }, {
   type: 'input',
   name: 'PI_WIFI_SSID',
   message: 'WiFi SSID',
   when: answers => answers._useWifi,
-  validate: Validate.required,
+  validate: Validate.required
 }, {
   type: 'input',
   name: 'PI_WIFI_PASS',
   message: 'WiFi Password',
   when: answers => answers._useWifi,
-  validate: Validate.required,
+  validate: Validate.required
 }, {
   type: 'input',
   name: 'PI_IP_ADDRESS_RANGE_START',
   message: 'IP address range start',
-  validate: Validate.isIp,
+  validate: Validate.isIp
 }, {
   type: 'input',
   name: 'PI_IP_ADDRESS_RANGE_END',
@@ -194,15 +194,15 @@ const questions = [{
   when: answers => !!answers.PI_IP_ADDRESS_RANGE_START,
   validate: Validate.multi([
     Validate.isIp,
-    Validate.ipGreaterThan('PI_IP_ADDRESS_RANGE_START'),
-  ]),
+    Validate.ipGreaterThan('PI_IP_ADDRESS_RANGE_START')
+  ])
 }, {
   type: 'list',
   name: 'PI_DNS_ADDRESS',
   message: 'Which DNS server do you want to use?',
   choices: [{
     name: 'CloudFlare',
-    value: '1.1.1.1 1.0.0.1',
+    value: '1.1.1.1 1.0.0.1'
   }, {
     name: 'Google',
     value: '8.8.8.8 8.8.4.4'
@@ -216,10 +216,10 @@ const questions = [{
   message: 'Do you want to install Docker?',
   choices: [{
     name: 'Yes',
-    value: 'true',
+    value: 'true'
   }, {
     name: 'No',
-    value: 'false',
+    value: 'false'
   }]
 }, {
   type: 'list',
@@ -227,41 +227,41 @@ const questions = [{
   message: 'Configure the GPU memory allocation',
   choices: [{
     name: 'Default',
-    value: undefined,
+    value: undefined
   }, {
-    value: 16,
+    value: 16
   }, {
-    value: 32,
+    value: 32
   }, {
-    value: 64,
+    value: 64
   }, {
-    value: 128,
+    value: 128
   }, {
-    value: 256,
-  }],
+    value: 256
+  }]
 }, {
   type: 'list',
   name: '_emailConfirm',
   message: 'Do you want to send an email when it\'s configured?',
   choices: [{
     name: 'Yes',
-    value: true,
+    value: true
   }, {
     name: 'No',
-    value: false,
-  }],
+    value: false
+  }]
 }, {
   type: 'input',
   name: 'PI_MAILGUN_DOMAIN',
   message: 'MailGun domain',
   when: answers => answers._emailConfirm,
-  validate: Validate.required,
+  validate: Validate.required
 }, {
   type: 'input',
   name: 'PI_MAILGUN_API_KEY',
   message: 'MailGun API key',
   when: answers => answers._emailConfirm,
-  validate: Validate.required,
+  validate: Validate.required
 }, {
   type: 'input',
   name: 'PI_EMAIL_ADDRESS',
@@ -269,8 +269,8 @@ const questions = [{
   when: answers => answers._emailConfirm,
   validate: Validate.multi([
     Validate.required,
-    Validate.isEmail,
-  ]),
+    Validate.isEmail
+  ])
 }];
 
 inquirer.prompt(questions)
@@ -304,7 +304,7 @@ inquirer.prompt(questions)
   .then((answers) => {
     const settings = [
       '#!/bin/sh',
-      '',
+      ''
     ];
 
     Object

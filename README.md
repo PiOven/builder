@@ -97,6 +97,7 @@ will send you an email when it's all configured.
 
 - [ ] Get a web app set up to allow `.img` file to be done remotely
 - [ ] Watch for changes in a Git repo to allow automated deployments to the Pi 
+- [ ] Reduce Docker image size (ideally to Alpine)
 - [x] Get working on other operating systems (currently only tested on Fedora)
 - [x] Cronjob to do updates
 - [x] Get `make setup` to prompt for the setup
