@@ -12,7 +12,7 @@ before_install:
 - date
 - docker login --username=${DOCKER_USER} --password=${DOCKER_PASS}
 
-script: make test docker-build
+script: make docker-build test
 
 deploy:
   provider: script
