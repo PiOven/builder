@@ -31,6 +31,17 @@ docker-run:
 		${CMD}
 .PHONY: docker-run
 
+publish:
+	$(eval VERSION := $(shell make version))
+
+	@echo "Tagging Docker images as v${VERSION}"
+	docker tag ${DOCKER_CONTAINER}:latest ${DOCKER_CONTAINER}:${VERSION}
+
+	@echo "Pushing images to Docker"
+	docker push ${DOCKER_CONTAINER}:latest
+	docker push ${DOCKER_CONTAINER}:${VERSION}
+.PHONY: publish
+
 setup:
 	make docker-run CMD="node ./scripts/setup.js" RUN_USER=1000
 
@@ -40,3 +51,7 @@ setup:
 test:
 	make docker-run CMD="npm test" RUN_USER=1000
 .PHONY: test
+
+version:
+	@echo $(TRAVIS_TAG:v%=%)
+.PHONY: version
