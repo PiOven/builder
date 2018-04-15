@@ -5,7 +5,6 @@
 'use strict';
 
 /* Node modules */
-const os = require('os');
 const path = require('path');
 
 /* Third-party modules */
@@ -127,16 +126,6 @@ const Validate = {
   required: input => input !== '' ? true : 'Required field'
 };
 
-function getCurrentDrive () {
-  let out = '';
-  if (os.platform() === 'win32') {
-    return 'C';
-  }
-  out += path.sep;
-
-  return out;
-}
-
 const questions = [{
   type: 'input',
   name: 'PI_OS',
@@ -159,7 +148,7 @@ const questions = [{
   name: 'PI_PASSWORD_LENGTH',
   message: 'Password length',
   default: 32,
-  validate: Validate.isGTE(8),
+  validate: Validate.isGTE(8)
 }, {
   type: 'list',
   name: '_useWifi',
