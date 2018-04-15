@@ -75,8 +75,13 @@ the **PI_USERNAME** as part of the `docker` group. The command it runs is:
 
 ## OS URLs
 
-- [Raspbian](https://downloads.raspberrypi.org/raspbian/images)
 - [Raspbian Lite](https://downloads.raspberrypi.org/raspbian_lite/images)
+- [Raspbian](https://downloads.raspberrypi.org/raspbian/images)
+
+> Lite images are smaller (typically around 1.7GB rather than 4.7GB) and have no 
+> desktop attached so are better suited to being used as a server. These images
+> are what was envisaged when this project was created, however using the full
+> images should work fine.
 
 # Run
 
