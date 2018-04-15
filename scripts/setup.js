@@ -62,6 +62,18 @@ const Validate = {
     return Promise.reject(err);
   }),
 
+  isGTE: target => input => {
+    const num = Number(input);
+
+    if (isNaN(num)) {
+      return 'Must be a number';
+    } else if (num < target) {
+      return `Must be ${target} or greater`;
+    }
+
+    return true;
+  },
+
   isIp: input => {
     if (!input) {
       return true;
@@ -143,23 +155,12 @@ const questions = [{
   default: input => input.PI_USERNAME,
   validate: Validate.required
 }, {
-//   type: 'list',
-//   name: '_generateKey',
-//   message: 'What SSH key do you want to use?',
-//   choices: [{
-//     name: 'Generate a new one',
-//     value: true
-//   }, {
-//     name: 'Use an existing one',
-//     value: false
-//   }]
-// }, {
-//   type: 'filePath',
-//   name: 'PI_SSH_KEY',
-//   message: 'Public SSH key path',
-//   when: answers => !answers._generateKey,
-//   basePath: getCurrentDrive()
-// }, {
+  type: 'number',
+  name: 'PI_PASSWORD_LENGTH',
+  message: 'Password length',
+  default: 32,
+  validate: Validate.isGTE(8),
+}, {
   type: 'list',
   name: '_useWifi',
   message: 'Do you want to connect via WiFi?',
