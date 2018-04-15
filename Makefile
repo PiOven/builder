@@ -38,8 +38,8 @@ publish:
 	docker tag ${DOCKER_CONTAINER}:latest ${DOCKER_CONTAINER}:${VERSION}
 
 	@echo "Pushing images to Docker"
-	docker push ${DOCKER_CONTAINER}:latest
 	docker push ${DOCKER_CONTAINER}:${VERSION}
+	docker push ${DOCKER_CONTAINER}:latest
 .PHONY: publish
 
 setup:
