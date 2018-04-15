@@ -143,23 +143,23 @@ const questions = [{
   default: input => input.PI_USERNAME,
   validate: Validate.required
 }, {
-  type: 'list',
-  name: '_generateKey',
-  message: 'What SSH key do you want to use?',
-  choices: [{
-    name: 'Generate a new one',
-    value: true
-  }, {
-    name: 'Use an existing one',
-    value: false
-  }]
-}, {
-  type: 'filePath',
-  name: 'PI_SSH_KEY',
-  message: 'Public SSH key path',
-  when: answers => !answers._generateKey,
-  basePath: getCurrentDrive()
-}, {
+//   type: 'list',
+//   name: '_generateKey',
+//   message: 'What SSH key do you want to use?',
+//   choices: [{
+//     name: 'Generate a new one',
+//     value: true
+//   }, {
+//     name: 'Use an existing one',
+//     value: false
+//   }]
+// }, {
+//   type: 'filePath',
+//   name: 'PI_SSH_KEY',
+//   message: 'Public SSH key path',
+//   when: answers => !answers._generateKey,
+//   basePath: getCurrentDrive()
+// }, {
   type: 'list',
   name: '_useWifi',
   message: 'Do you want to connect via WiFi?',
@@ -275,14 +275,7 @@ const questions = [{
 
 inquirer.prompt(questions)
   .then((answers) => {
-    /* Are we generating the SSH key? */
-    if (!answers._generateKey) {
-      /* No - just set the key location */
-      answers.PI_SSH_KEY = getCurrentDrive() + answers.PI_SSH_KEY;
-
-      return answers;
-    }
-
+    /* Generate the SSH key */
     const location = path.join(keyDir, answers.PI_HOSTNAME);
 
     return new Promise((resolve, reject) => {
