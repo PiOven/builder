@@ -5,7 +5,6 @@
 'use strict';
 
 /* Node modules */
-const os = require('os');
 const path = require('path');
 
 /* Third-party modules */
@@ -62,6 +61,18 @@ const Validate = {
     return Promise.reject(err);
   }),
 
+  isGTE: target => input => {
+    const num = Number(input);
+
+    if (isNaN(num)) {
+      return 'Must be a number';
+    } else if (num < target) {
+      return `Must be ${target} or greater`;
+    }
+
+    return true;
+  },
+
   isIp: input => {
     if (!input) {
       return true;
@@ -115,16 +126,6 @@ const Validate = {
   required: input => input !== '' ? true : 'Required field'
 };
 
-function getCurrentDrive () {
-  let out = '';
-  if (os.platform() === 'win32') {
-    return 'C';
-  }
-  out += path.sep;
-
-  return out;
-}
-
 const questions = [{
   type: 'input',
   name: 'PI_OS',
@@ -143,22 +144,11 @@ const questions = [{
   default: input => input.PI_USERNAME,
   validate: Validate.required
 }, {
-  type: 'list',
-  name: '_generateKey',
-  message: 'What SSH key do you want to use?',
-  choices: [{
-    name: 'Generate a new one',
-    value: true
-  }, {
-    name: 'Use an existing one',
-    value: false
-  }]
-}, {
-  type: 'filePath',
-  name: 'PI_SSH_KEY',
-  message: 'Public SSH key path',
-  when: answers => !answers._generateKey,
-  basePath: getCurrentDrive()
+  type: 'number',
+  name: 'PI_PASSWORD_LENGTH',
+  message: 'Password length',
+  default: 32,
+  validate: Validate.isGTE(8)
 }, {
   type: 'list',
   name: '_useWifi',
@@ -275,14 +265,7 @@ const questions = [{
 
 inquirer.prompt(questions)
   .then((answers) => {
-    /* Are we generating the SSH key? */
-    if (!answers._generateKey) {
-      /* No - just set the key location */
-      answers.PI_SSH_KEY = getCurrentDrive() + answers.PI_SSH_KEY;
-
-      return answers;
-    }
-
+    /* Generate the SSH key */
     const location = path.join(keyDir, answers.PI_HOSTNAME);
 
     return new Promise((resolve, reject) => {

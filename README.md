@@ -1,5 +1,7 @@
 # Pi Builder
 
+[![Build Status](https://travis-ci.org/PiOven/builder.svg?branch=master)](https://travis-ci.org/PiOven/builder)
+
 A script to automate the headless building of a configured Raspberry Pi
 
 # Quick Start
