@@ -1,6 +1,6 @@
 {
   "name": "pibuilder",
-  "version": "0.2.0",
+  "version": "0.2.1",
   "description": "A script to automate building of a configured Raspberry Pi",
   "main": "index.js",
   "scripts": {
