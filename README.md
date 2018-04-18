@@ -95,11 +95,6 @@ When you power-up the Pi, which will take between 30 seconds and 5 minutes
 to the Pi with the credentials you provided. If you configured the email, it
 will send you an email when it's all configured.
 
-> If you set an IP address range, you will probably have to restart the Pi after 
-> the first run. This is due to the `/etc/rc.local` file not being able to handle
-> restarting services in there (if anyone know's how to do this, please open a PR).
-> Before the restart, the Pi will have the IP address initially set by DHCP.
-
 # ToDo
 
 - [ ] Get a web app set up to allow `.img` file to be done remotely
