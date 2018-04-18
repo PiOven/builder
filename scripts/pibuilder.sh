@@ -111,7 +111,7 @@ fi
 # Set the first boot script
 if ! (grep -q "./scripts/first_run.sh" "${ROOT_DIR}/etc/rc.local"); then
   sed -i '$ d' "${ROOT_DIR}/etc/rc.local"
-  printf "if [ -f /first_run.sh ]; then\n  printf 'Setting up the Pi'\n  sh /first_run.sh\n\n  printf 'Pi setup'\nfi\n\nexit 0" >> "${ROOT_DIR}/etc/rc.local"
+  printf "if [ -f /first_run.sh ]; then\n  printf 'Setting up the Pi'\n  sh /first_run.sh\n  reboot\n\n  printf 'Pi setup'\nfi\n\nexit 0\n" >> "${ROOT_DIR}/etc/rc.local"
 fi
 
 cp ./scripts/first_run.sh "${ROOT_DIR}/first_run.sh"
