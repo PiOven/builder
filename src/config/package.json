@@ -1,0 +1,29 @@
+{
+  "name": "@pioven/config",
+  "version": "0.2.1",
+  "description": "A script to automate building of a configured Raspberry Pi",
+  "main": "./index",
+  "scripts": {
+    "test": "npm run -s test:lint",
+    "test:lint": "semistandard ./**/*.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/PiOven/config.git"
+  },
+  "author": "Simon Emms <simon@simonemms.com>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/PiOven/config/issues"
+  },
+  "homepage": "https://github.com/PiOven/config#readme",
+  "private": true,
+  "dependencies": {
+    "email-validator": "^1.1.1",
+    "ip-to-int": "^0.3.1",
+    "validate-ip": "^1.0.1"
+  },
+  "devDependencies": {
+    "semistandard": "^11.0.0"
+  }
+}
