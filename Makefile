@@ -1,4 +1,4 @@
-DOCKER_CONTAINER ?= riggerthegeek/pibuilder
+DOCKER_CONTAINER ?= pioven/builder
 RUN_USER ?= 0
 CACHE_DIR ?= /cache
 SRC_DIR ?= /src
