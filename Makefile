@@ -1,6 +1,7 @@
 DOCKER_CONTAINER ?= riggerthegeek/pibuilder
 RUN_USER ?= 0
-OUT_DIR ?= /dist
+CACHE_DIR ?= /cache
+SRC_DIR ?= /src
 
 all: setup build
 
@@ -15,17 +16,12 @@ docker-build:
 .PHONY: docker-build
 
 docker-run:
-	mkdir -p .${OUT_DIR}/cache
-	mkdir -p .${OUT_DIR}/ssh-keys
-	touch .${OUT_DIR}/settings.sh
 	docker run \
 		-it \
 		--privileged \
 		--rm \
-		-v "${PWD}${OUT_DIR}/settings.sh:/opt/pibuilder/settings.sh" \
-		-v "${PWD}${OUT_DIR}/cache:/opt/pibuilder/cache" \
-		-v "${PWD}${OUT_DIR}/ssh-keys:/ssh-keys" \
-		-v "${PWD}/scripts:/opt/pibuilder/scripts" \
+		-v "${PWD}${CACHE_DIR}:/opt/builder${CACHE_DIR}" \
+		-v "${PWD}${SRC_DIR}:/opt/builder${SRC_DIR}" \
 		-u ${RUN_USER} \
 		${DOCKER_CONTAINER} \
 		${CMD}
