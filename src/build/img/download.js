@@ -62,7 +62,6 @@ function download (url, target, filename, guessChecksum = false) {
         bar.tick(data.length, {});
       })
       .on('end', () => {
-        console.log(filePath);
         resolve(filePath);
       })
       .on('error', (err) => {
@@ -122,7 +121,7 @@ function verifyDownload (downloadPath, verifyPath) {
       const re = new RegExp(`${string}`);
 
       if (!re.test(result)) {
-        reject(new Error('CHECKSUM_MISMATCH'));
+        reject(new Error('Checksum mismatch - try downloading again'));
         return;
       }
 
