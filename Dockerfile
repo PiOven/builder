@@ -1,27 +1,14 @@
-FROM fedora:27
+FROM node:8-alpine
 
-# Setup the user
-RUN groupadd --gid 1000 pibuilder \
-  && useradd --uid 1000 --gid pibuilder --shell /bin/bash --create-home pibuilder
+WORKDIR /opt/builder
+ADD ./src ./src
+ADD package*.json ./
 
-# Install dependencies
-RUN curl --silent --location https://rpm.nodesource.com/setup_8.x | bash - \
-  && dnf update -y \
-  && dnf install -y nodejs \
-  && dnf install -y gcc-c++ make \
-  && dnf install -y pylint \
-  && node --version \
-  && npm --version
+VOLUME /opt/builder/cache
 
-WORKDIR /opt/pibuilder
-ADD . .
+ENV CACHE_DIR=/opt/builder/cache
 
-ARG SSH_KEY_DIR="/ssh-keys"
-
-VOLUME ${SSH_KEY_DIR}
-
-ENV SSH_KEY_DIR=${SSH_KEY_DIR}
-
-# Install dependencies
-RUN dnf install -y git kpartx openssh-clients unzip \
+RUN apk add --no-cache multipath-tools openssh-client \
   && npm install
+
+USER node

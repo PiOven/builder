@@ -31,7 +31,7 @@ const config = {
 
 function mountToDir ({ dir, point }) {
   const mountPoint = path.join(`${path.sep}dev`, 'mapper', point);
-  return exec(`mount "${mountPoint}" ${dir} -o ro --rw`)
+  return exec(`mount "${mountPoint}" ${dir}`)
     .then(() => ({
       dir,
       mountPoint
@@ -46,7 +46,7 @@ module.exports = {
       /* Create the directories that img will be mounted too */
       .then(() => Promise.all([
         fs.mkdirp(config.dirs.boot),
-        fs.mkdirp(config.dirs.root)
+        fs.mkdirp(config.dirs.root),
       ]))
       /* Use kpartx to load the img file */
       .then(() => exec(`kpartx -vas ${osFile}`))

@@ -20,6 +20,7 @@ docker-run:
 		-it \
 		--privileged \
 		--rm \
+		-v /dev:/dev \
 		-v "${PWD}${CACHE_DIR}:/opt/builder${CACHE_DIR}" \
 		-v "${PWD}${SRC_DIR}:/opt/builder${SRC_DIR}" \
 		-u ${RUN_USER} \
@@ -39,7 +40,7 @@ publish:
 .PHONY: publish
 
 setup:
-	make docker-run CMD="node ./scripts/setup.js" RUN_USER=1000
+	make docker-run CMD="node ./src/setup" RUN_USER=1000
 
 	@echo "Now run 'make build' to configure the image"
 .PHONY: setup

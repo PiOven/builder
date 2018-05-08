@@ -13,24 +13,24 @@ const Validate = require('./validation');
 
 module.exports = [{
   type: 'input',
-  name: 'PI_OS',
+  name: 'osUrl',
   default: 'https://downloads.raspberrypi.org/raspbian_lite/images/raspbian_lite-2017-07-05/2017-07-05-raspbian-jessie-lite.zip',
   message: 'Operating System URL',
   validate: Validate.required
 }, {
   type: 'input',
-  name: 'PI_USERNAME',
+  name: 'username',
   message: 'Username',
   validate: Validate.required
 }, {
   type: 'input',
-  name: 'PI_HOSTNAME',
+  name: 'hostname',
   message: 'Hostname',
-  default: input => input.PI_USERNAME,
+  default: input => input.username,
   validate: Validate.required
 }, {
   type: 'number',
-  name: 'PI_PASSWORD_LENGTH',
+  name: 'passwordLength',
   message: 'Password length',
   default: 32,
   validate: Validate.isGTE(8)
@@ -47,33 +47,33 @@ module.exports = [{
   }]
 }, {
   type: 'input',
-  name: 'PI_WIFI_SSID',
+  name: 'wifiSsid',
   message: 'WiFi SSID',
   when: answers => answers._useWifi,
   validate: Validate.required
 }, {
   type: 'input',
-  name: 'PI_WIFI_PASS',
+  name: 'wifiPass',
   message: 'WiFi Password',
   when: answers => answers._useWifi,
   validate: Validate.required
 }, {
   type: 'input',
-  name: 'PI_IP_ADDRESS_RANGE_START',
+  name: 'ipAddressRangeStart',
   message: 'IP address range start',
   validate: Validate.isIp
 }, {
   type: 'input',
-  name: 'PI_IP_ADDRESS_RANGE_END',
+  name: 'ipAddressRangeEnd',
   message: 'IP address range end',
-  when: answers => !!answers.PI_IP_ADDRESS_RANGE_START,
+  when: answers => !!answers.ipAddressRangeStart,
   validate: Validate.multi([
     Validate.isIp,
-    Validate.ipGreaterThan('PI_IP_ADDRESS_RANGE_START')
+    Validate.ipGreaterThan('ipAddressRangeStart')
   ])
 }, {
   type: 'list',
-  name: 'PI_DNS_ADDRESS',
+  name: 'dnsAddress',
   message: 'Which DNS server do you want to use?',
   choices: [{
     name: 'CloudFlare',
@@ -87,18 +87,18 @@ module.exports = [{
   }]
 }, {
   type: 'list',
-  name: 'PI_INSTALL_DOCKER',
+  name: 'installDocker',
   message: 'Do you want to install Docker?',
   choices: [{
     name: 'Yes',
-    value: 'true'
+    value: true
   }, {
     name: 'No',
-    value: 'false'
+    value: false
   }]
 }, {
   type: 'list',
-  name: 'PI_GPU_MEMORY',
+  name: 'gpuMemory',
   message: 'Configure the GPU memory allocation',
   choices: [{
     name: 'Default',
@@ -127,19 +127,19 @@ module.exports = [{
   }]
 }, {
   type: 'input',
-  name: 'PI_MAILGUN_DOMAIN',
+  name: 'mailgunDomain',
   message: 'MailGun domain',
   when: answers => answers._emailConfirm,
   validate: Validate.required
 }, {
   type: 'input',
-  name: 'PI_MAILGUN_API_KEY',
+  name: 'mailgunApiKey',
   message: 'MailGun API key',
   when: answers => answers._emailConfirm,
   validate: Validate.required
 }, {
   type: 'input',
-  name: 'PI_EMAIL_ADDRESS',
+  name: 'emailAddress',
   message: 'Email address',
   when: answers => answers._emailConfirm,
   validate: Validate.multi([

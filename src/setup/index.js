@@ -1,5 +1,5 @@
 /**
- * setup
+ * index
  */
 
 'use strict';
@@ -8,59 +8,59 @@
 const path = require('path');
 
 /* Third-party modules */
-const fs = require('fs.extra');
+const fs = require('fs-extra');
 const inquirer = require('inquirer');
 const keyGen = require('ssh-keygen');
 
 /* Files */
 const questions = require('../config/index');
 
-const keyDir = process.env.SSH_KEY_DIR || path.join(__dirname, '..', 'ssh-keys');
-fs.mkdirpSync(keyDir);
+const keyDir = path.join(process.env.CACHE_DIR, 'ssh-keys');
 
-inquirer.prompt(questions)
+Promise.resolve()
+  .then(() => fs.mkdirp(keyDir))
+  .then(() => {
+    return inquirer.prompt(questions);
+  })
   .then((answers) => {
     /* Generate the SSH key */
-    const location = path.join(keyDir, answers.PI_HOSTNAME);
+    const location = path.join(keyDir, answers.hostname);
 
     return new Promise((resolve, reject) => {
       keyGen({
         location,
-        comment: answers.PI_HOSTNAME
+        comment: answers.hostname
       }, (err) => {
         if (err) {
+          console.log({
+            err
+          });
           reject(err);
           return;
         }
 
-        answers.PI_SSH_KEY = `${location}.pub`;
+        answers.sshKey = `${location}.pub`;
 
         resolve(answers);
       });
     });
   })
   .then((answers) => {
-    const settings = [
-      '#!/bin/sh',
-      ''
-    ];
+    const settings = {};
 
     Object
       .keys(answers)
       .filter(key => /^_/.test(key) === false)
       .filter(key => answers[key] !== undefined)
       .forEach(key => {
-        settings.push(`${key}="${answers[key]}"`);
+        settings[key] = answers[key];
       });
 
-    /* Add trailing line */
-    settings.push('');
+    const filePath = path.join(process.env.CACHE_DIR, 'settings.json');
 
-    const filePath = path.join(__dirname, '..', 'settings.sh');
-    const data = settings.join('\n');
-
-    fs.writeFileSync(filePath, data, 'utf8');
-
+    return fs.writeFile(filePath, JSON.stringify(settings, null, 2), 'utf8');
+  })
+  .then(() => {
     console.log('Setup completed successfully');
   })
   .catch((err) => {

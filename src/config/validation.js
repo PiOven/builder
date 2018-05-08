@@ -5,6 +5,7 @@
 'use strict';
 
 /* Node modules */
+const fs = require('fs');
 
 /* Third-party modules */
 const ipToInt = require('ip-to-int');
