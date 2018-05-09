@@ -52,7 +52,14 @@ module.exports = (config, { boot, root }) => {
           }
 
           /* Append WiFi config to file */
-          const wifi = `\nnetwork={\n  ssid=\"${config.wifiSsid}\"\n  psk=\"${config.wifiPass}\"\n}\n`;
+          const wifi = [
+            '',
+            'network={',
+            `  ssid="${config.wifiSsid}"`,
+            `  psk="${config.wifiPass}"`,
+            '}',
+            ''
+          ].join('\n');
 
           return fs.appendFile(opts.wpaConfFile, wifi)
         });
