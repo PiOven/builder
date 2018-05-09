@@ -26,6 +26,7 @@
     "ip-to-int": "^0.3.1",
     "lodash": "^4.17.10",
     "progress": "^2.0.0",
+    "randomstring": "^1.1.5",
     "request": "^2.85.0",
     "ssh-keygen": "^0.4.1",
     "unzip": "^0.1.11",
