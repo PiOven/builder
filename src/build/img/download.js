@@ -132,10 +132,28 @@ function verifyDownload (downloadPath, verifyPath) {
   }));
 }
 
-module.exports = (url, target, checksum) => Promise.all([
-  download(url, target, 'os.zip'),
-  download(checksum, target, 'checksum', true)
-]).then(([ osPath, checksumPath ]) => verifyDownload(osPath, checksumPath))
+module.exports = (url, target, checksum) => Promise.resolve()
+  .then(() => {
+    const tasks = [
+      download(url, target, 'os.zip')
+    ];
+
+    /* Checksum is optional */
+    if (checksum) {
+      tasks.push(download(checksum, target, 'checksum', true));
+    }
+
+    return Promise.all(tasks)
+      .then(([ osPath, checksumPath ]) => {
+        if (!checksum) {
+          console.warn('WARNING: No checksum given so download will not be verified');
+
+          return osPath;
+        }
+
+        return verifyDownload(osPath, checksumPath);
+      });
+  })
   .then((filePath) => {
     /* Extract the file */
     const ext = path.extname(filePath);
