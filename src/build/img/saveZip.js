@@ -14,9 +14,9 @@ const fs = require('fs-extra');
 
 const exec = util.promisify(childProcess.exec);
 
-module.exports = (cacheDir, imgPath, config) => {
-  const credentialsTarget = path.join(cacheDir, 'credentials.txt');
-  const saveTarget = path.join(cacheDir, `${config.hostname}.zip`);
+module.exports = (imgPath, config) => {
+  const credentialsTarget = path.join(config.cacheDir, 'credentials.txt');
+  const saveTarget = path.join(config.cacheDir, `${config.hostname}.zip`);
   const credentials = [
     `username: ${config.username}`,
     `password: ${config.password}`
