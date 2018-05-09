@@ -30,9 +30,10 @@ Promise.resolve()
     .then(mountPoints => configureOS(config, mountPoints))
     .then(() => imgMounter.unmount())
     .then(() => saveZip(imgPath, config)))
-  .then(credentials => {
+  .then(({ credentials, saveTarget }) => {
     console.log('--- Finished successfully ---');
     console.log(credentials);
+    console.log(`Location: ${saveTarget}`);
     console.log('-----------------------------');
   })
   .catch((err) => {

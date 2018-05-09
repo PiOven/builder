@@ -18,8 +18,8 @@ module.exports = (imgPath, config) => {
   const credentialsTarget = path.join(config.cacheDir, 'credentials.txt');
   const saveTarget = path.join(config.cacheDir, `${config.hostname}.zip`);
   const credentials = [
-    `username: ${config.username}`,
-    `password: ${config.password}`
+    `Username: ${config.username}`,
+    `Password: ${config.password}`
   ].join('\n');
 
   return fs.writeFile(credentialsTarget, credentials)
@@ -29,5 +29,8 @@ module.exports = (imgPath, config) => {
 
       return exec(cmd);
     })
-    .then(() => credentials);
+    .then(() => ({
+      credentials,
+      saveTarget
+    }));
 };
