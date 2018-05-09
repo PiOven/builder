@@ -7,3 +7,5 @@ node_modules
 dist
 cache/*
 !cache/.gitkeep
+src/build/first-run/data/*
+!src/build/first-run/data/.gitkeep

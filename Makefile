@@ -6,9 +6,9 @@ SRC_DIR ?= /src
 all: setup build
 
 build:
-	make docker-run CMD="sh ./scripts/pibuilder.sh"
+	make docker-run CMD="node ./src/build/img"
 
-	@echo "Now write .${OUT_DIR}/cache/os.img to an SD card and put into a Pi. This will take up to 5 minutes to configure"
+	@echo "Now write .${CACHE_DIR}/os.img to an SD card and put into a Pi. This will take up to 5 minutes to configure"
 .PHONY: build
 
 docker-build:

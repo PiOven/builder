@@ -8,24 +8,33 @@
 const path = require('path');
 
 /* Third-party modules */
+const randomString = require('randomstring');
 
 /* Files */
+const config = require('../../../cache/settings');
 const configureOS = require('./configureOS');
 const download = require('./download');
 const imgMounter = require('./imgMounter');
+const saveZip = require('./saveZip');
 
-const config = {
-  url: 'https://downloads.raspberrypi.org/raspbian_lite/images/raspbian_lite-2018-04-19/2018-04-18-raspbian-stretch-lite.zip',
-  sha256: 'https://downloads.raspberrypi.org/raspbian_lite/images/raspbian_lite-2018-04-19/2018-04-18-raspbian-stretch-lite.zip.sha256',
-  target: path.join(__dirname, '..', '..', '..', 'cache')
-};
+config.cacheDir = path.join(__dirname, '..', '..', '..', 'cache');
+config.password = randomString.generate({
+  length: config.passwordLength,
+  readable: true,
+  charset: 'alphanumeric'
+});
 
 Promise.resolve()
-  .then(() => download(config.url, config.target, config.sha256))
-  // .then(() => `${config.target}/os.img`)
-  .then(imgPath => imgMounter.mount(imgPath))
-  .then(mountPoints => configureOS(config, mountPoints))
-  .then(() => imgMounter.unmount())
+  .then(() => download(config.osUrl, config.cacheDir, config.osVerify))
+  .then(imgPath => imgMounter.mount(imgPath)
+    .then(mountPoints => configureOS(config, mountPoints))
+    .then(() => imgMounter.unmount())
+    .then(() => saveZip(imgPath, config)))
+  .then(credentials => {
+    console.log('--- Finished successfully ---');
+    console.log(credentials);
+    console.log('-----------------------------');
+  })
   .catch((err) => {
     console.log(err.stack);
     process.exit(1);

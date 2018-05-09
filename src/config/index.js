@@ -19,6 +19,11 @@ module.exports = [{
   validate: Validate.required
 }, {
   type: 'input',
+  name: 'osVerify',
+  default: input => `${input.osUrl}.sha256`,
+  message: 'Checksum URL'
+}, {
+  type: 'input',
   name: 'username',
   message: 'Username',
   validate: Validate.required
