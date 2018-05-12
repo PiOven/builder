@@ -20,12 +20,12 @@ module.exports = (imgPath, config) => {
   const credentials = [
     `Username: ${config.username}`,
     `Password: ${config.password}`
-  ].join('\n');
+  ].join('\n')
 
   return fs.writeFile(credentialsTarget, credentials)
     .then(() => {
       /* Does the fastest compression, with no internal directories */
-      const cmd = `zip -1j ${saveTarget} ${credentialsTarget} ${imgPath}`;
+      const cmd = `zip -1j ${saveTarget} ${credentialsTarget} ${imgPath} ${config.sshKey} ${config.sshKeyPub}`;
 
       return exec(cmd);
     })

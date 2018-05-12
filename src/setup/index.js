@@ -30,16 +30,14 @@ Promise.resolve()
       keyGen({
         location,
         comment: answers.hostname
-      }, (err) => {
+      }, err => {
         if (err) {
-          console.log({
-            err
-          });
           reject(err);
           return;
         }
 
-        answers.sshKey = `${location}.pub`;
+        answers.sshKey = location;
+        answers.sshKeyPub = `${location}.pub`;
 
         resolve(answers);
       });

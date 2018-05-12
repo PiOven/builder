@@ -84,7 +84,8 @@ module.exports = {
               return result;
             }, {});
           });
-      });
+      })
+      .then(result => new Promise(resolve => setTimeout(() => resolve(result), 5000)));
   },
 
   unmount (ignoreError = false) {

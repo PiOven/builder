@@ -86,7 +86,7 @@ module.exports = (config, { boot, root }) => {
     .then(() => {
       /* Copy the first run data */
       return Promise.all([
-        fs.copy(config.sshKey, path.join(opts.firstRun.dest, 'data', 'id_rsa.pub'))
+        fs.copy(config.sshKeyPub, path.join(opts.firstRun.dest, 'data', 'id_rsa.pub'))
       ]);
     });
 };
