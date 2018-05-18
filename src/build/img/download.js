@@ -4,10 +4,10 @@
 
 /* Node modules */
 const crypto = require('crypto');
-const fs = require('fs');
 const path = require('path');
 
 /* Third-party modules */
+const fs = require('fs-extra');
 const glob = require('glob');
 const ProgressBar = require('progress');
 const request = require('request');
@@ -36,42 +36,58 @@ function discoverChecksum (url) {
 }
 
 function download (url, target, filename, guessChecksum = false) {
-  return new Promise((resolve, reject) => {
-    let filePath = path.join(target, filename);
+  let filePath = path.join(target, filename);
 
-    if (guessChecksum) {
-      const ext = discoverChecksum(url);
-      filePath += `.${ext}`;
-    }
+  if (guessChecksum) {
+    const ext = discoverChecksum(url);
+    filePath += `.${ext}`;
+  }
 
-    const bar = new ProgressBar(` * Downloading ${filename}: :bar :percent :etas`, {
-      complete: '#',
-      incomplete: ' ',
-      width: 72,
-      total: 0
-    });
+  const tmpPath = `${filePath}.tmp`;
 
-    request
-      .get(url)
-      .on('data', (data) => {
-        if (!bar.total) {
-          /* No content length */
-          return;
-        }
+  return fs.stat(filePath)
+    .then(result => !result.isFile())
+    .catch(() => true) /* Ignore - almost certainly because doesn't exist */
+    .then(redownload => {
+      if (!redownload) {
+        return undefined
+      }
 
-        bar.tick(data.length, {});
-      })
-      .on('end', () => {
-        resolve(filePath);
-      })
-      .on('error', (err) => {
-        reject(err);
-      })
-      .on('response', (response) => {
-        bar.total = response.headers['content-length'] || 0;
-      })
-      .pipe(fs.createWriteStream(filePath));
-  });
+      /* Need to redownload */
+      return Promise.all([
+        fs.remove(filePath),
+        fs.remove(tmpPath)
+      ]).then(() => new Promise((resolve, reject) => {
+        const bar = new ProgressBar(` * Downloading ${filename}: :bar :percent :etas`, {
+          complete: '#',
+          incomplete: ' ',
+          width: 72,
+          total: 0
+        });
+
+        request
+          .get(url)
+          .on('data', (data) => {
+            if (!bar.total) {
+              /* No content length */
+              return;
+            }
+
+            bar.tick(data.length, {});
+          })
+          .on('end', () => {
+            resolve(filePath);
+          })
+          .on('error', (err) => {
+            reject(err);
+          })
+          .on('response', (response) => {
+            bar.total = response.headers['content-length'] || 0;
+          })
+          .pipe(fs.createWriteStream(tmpPath));
+      })).then(() => fs.move(tmpPath, filePath));
+    })
+    .then(() => filePath);
 }
 
 function extractZip (compressedFile, outputDir) {
@@ -111,25 +127,22 @@ function verifyDownload (downloadPath, verifyPath) {
         hash.update(data);
       }
     });
-  }).then((string) => new Promise((resolve, reject) => {
-    fs.readFile(verifyPath, 'utf8', (err, result) => {
-      if (err) {
-        reject(err);
-        return;
-      }
-
+  }).then(string => fs.readFile(verifyPath, 'utf8')
+    .then(result => {
       const re = new RegExp(`${string}`);
 
       if (!re.test(result)) {
-        reject(new Error('Checksum mismatch - try downloading again'));
-        return;
+        /* Delete the files */
+        return Promise.all([
+          fs.remove(downloadPath),
+          fs.remove(verifyPath)
+        ]).then(() => Promise.reject(new Error('Checksum mismatch - try downloading again')));
       }
 
       console.log('Checksums matched!');
 
-      resolve(downloadPath);
-    });
-  }));
+      return downloadPath;
+    }));
 }
 
 module.exports = (url, target, checksum) => Promise.resolve()
@@ -185,16 +198,10 @@ module.exports = (url, target, checksum) => Promise.resolve()
       resolve(result[0]);
     });
   }))
-  .then(imgFile => new Promise((resolve, reject) => {
+  .then(imgfile => {
     /* Rename the target file */
     const outputFile = path.join(target, 'os.img');
 
-    fs.rename(imgFile, outputFile, (err) => {
-      if (err) {
-        reject(err);
-        return;
-      }
-
-      resolve(outputFile);
-    });
-  }));
+    return fs.rename(imgfile, outputFile)
+      .then(() => outputFile);
+  });
