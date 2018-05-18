@@ -53,7 +53,7 @@ module.exports = [{
 }, {
   type: 'input',
   name: 'wifiSsid',
-  message: 'WiFi SSID',
+  message: 'WiFi SSID (2G recommended)',
   when: answers => answers._useWifi,
   validate: Validate.required
 }, {
