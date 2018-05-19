@@ -41,8 +41,9 @@ function mountToDir ({ dir, point }) {
 module.exports = {
 
   mount (osFile) {
-    /* Ensure nothing still around from previous */
-    return this.unmount(true)
+    return Promise.resolve()
+      /* Ensure nothing still around from previous */
+      .then(() => this.unmount(true))
       /* Create the directories that img will be mounted too */
       .then(() => Promise.all([
         fs.mkdirp(config.dirs.boot),
