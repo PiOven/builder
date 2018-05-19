@@ -21,10 +21,10 @@ const config = {
     root: '/media/root'
   },
   mounts: [{
-    regex: /\w*p1/,
+    regex: /\w*p1\b/,
     type: 'boot'
   }, {
-    regex: /\w*p2/,
+    regex: /\w*p2\b/,
     type: 'root'
   }]
 };
@@ -102,6 +102,25 @@ module.exports = {
         }
 
         return Promise.reject(err);
+      })
+      /* Remove logical volumes */
+      .then(() => exec('dmsetup ls'))
+      .then(({ stdout }) => {
+        /* Remove logical volumes created */
+        const tasks = stdout.split('\n')
+          .reduce((result, line) => {
+            config.mounts.forEach(mount => {
+              if (mount.regex.test(line)) {
+                const item = line.match(mount.regex);
+
+                result.push(exec(`dmsetup remove ${item}`));
+              }
+            });
+
+            return result;
+          }, []);
+
+        return Promise.all(tasks);
       });
   }
 
