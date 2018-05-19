@@ -6,11 +6,33 @@
 const path = require('path');
 
 /* Third-party modules */
+const { _ } = require('lodash');
 const fs = require('fs-extra');
 
 /* Files */
 
+function configToEnvvars (config) {
+  const output = Object.keys(config)
+    .map(key => {
+      const value = config[key];
+
+      const envKey = _
+        .chain(key)
+        .snakeCase()
+        .toUpper()
+        .value();
+
+      return `export PI_${envKey}="${value}"`;
+    });
+
+  output.unshift('#!/usr/bin/env bash', '');
+  output.push('');
+
+  return output.join('\n');
+}
+
 module.exports = (config, { boot, root }) => {
+  const envvarConfig = configToEnvvars(config);
   const dataDir = path.join(__dirname, '..', 'data');
 
   const opts = {
@@ -35,8 +57,9 @@ module.exports = (config, { boot, root }) => {
     wpaConfFile: path.join(root.dir, 'etc', 'wpa_supplicant', 'wpa_supplicant.conf')
   };
 
-  /* Enable SSH */
-  return fs.ensureFile(opts.sshFile)
+  return Promise.resolve()
+    /* Enable SSH */
+    .then(() => fs.ensureFile(opts.sshFile))
     .then(() => {
       /* Set the WiFi data */
       if (!config.wifiSsid) {
@@ -84,9 +107,10 @@ module.exports = (config, { boot, root }) => {
       return fs.copy(opts.firstRun.src, opts.firstRun.dest);
     })
     .then(() => {
-      /* Copy the first run data */
+      /* Copy the data required for first run */
       return Promise.all([
-        fs.copy(config.sshKeyPub, path.join(opts.firstRun.dest, 'data', 'id_rsa.pub'))
+        fs.copy(config.sshKeyPub, path.join(opts.firstRun.dest, 'data', 'id_rsa.pub')),
+        fs.writeFile(path.join(opts.firstRun.dest, 'config.sh'), envvarConfig, 'utf8'),
       ]);
     });
 };
