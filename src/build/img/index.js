@@ -14,6 +14,7 @@ const randomString = require('randomstring');
 const config = require('../../../cache/settings');
 const configureOS = require('./configureOS');
 const download = require('./download');
+const logger = require('./logger');
 const imgMounter = require('./imgMounter');
 const saveZip = require('./saveZip');
 
@@ -31,12 +32,12 @@ Promise.resolve()
     .then(() => imgMounter.unmount())
     .then(() => saveZip(imgPath, config)))
   .then(({ credentials, saveTarget }) => {
-    console.log('--- Finished successfully ---');
-    console.log(credentials);
-    console.log(`Location: ${saveTarget}`);
-    console.log('-----------------------------');
+    logger.info('Successfully configured', {
+      credentials,
+      saveTarget,
+    });
   })
   .catch((err) => {
-    console.log(err.stack);
+    logger.error('General error', err);
     process.exit(1);
   });

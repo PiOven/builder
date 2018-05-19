@@ -30,7 +30,8 @@
     "request": "^2.85.0",
     "ssh-keygen": "^0.4.1",
     "unzip": "^0.1.11",
-    "validate-ip": "^1.0.1"
+    "validate-ip": "^1.0.1",
+    "winston": "^3.0.0-rc5"
   },
   "devDependencies": {
     "semistandard": "^11.0.0"

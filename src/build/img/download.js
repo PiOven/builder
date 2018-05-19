@@ -14,6 +14,7 @@ const request = require('request');
 const unzip = require('unzip');
 
 /* Files */
+const logger = require('./logger');
 
 function discoverChecksum (url) {
   const supportedChecksums = [
@@ -107,10 +108,15 @@ function extractZip (compressedFile, outputDir) {
 }
 
 function verifyDownload (downloadPath, verifyPath) {
+  logger.info('Verifying download', {
+    downloadPath,
+    verifyPath,
+  });
+
   return new Promise((resolve, reject) => {
     const algo = discoverChecksum(verifyPath);
 
-    console.log(`Computing checksum with ${algo}`);
+    logger.info(`Computing checksum with ${algo}`);
 
     const hash = crypto.createHash(algo);
 
@@ -139,7 +145,7 @@ function verifyDownload (downloadPath, verifyPath) {
         ]).then(() => Promise.reject(new Error('Checksum mismatch - try downloading again')));
       }
 
-      console.log('Checksums matched!');
+      logger.info('Checksums matched!');
 
       return downloadPath;
     }));
@@ -159,7 +165,7 @@ module.exports = (url, target, checksum) => Promise.resolve()
     return Promise.all(tasks)
       .then(([ osPath, checksumPath ]) => {
         if (!checksum) {
-          console.warn('WARNING: No checksum given so download will not be verified');
+          logger.warn('WARNING: No checksum given so download will not be verified');
 
           return osPath;
         }

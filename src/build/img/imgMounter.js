@@ -12,8 +12,16 @@ const { _ } = require('lodash');
 const fs = require('fs-extra');
 
 /* Files */
+const logger = require('./logger');
 
-const exec = util.promisify(childProcess.exec);
+const exec = (cmd, opts) => {
+  logger.info('Execute Unix command', {
+    cmd,
+    opts
+  });
+
+  return util.promisify(childProcess.exec)(cmd, opts);
+};
 
 const config = {
   dirs: {
@@ -41,6 +49,10 @@ function mountToDir ({ dir, point }) {
 module.exports = {
 
   mount (osFile) {
+    logger.info('Mounting new file', {
+      osFile
+    });
+
     return Promise.resolve()
       /* Ensure nothing still around from previous */
       .then(() => this.unmount(true))
@@ -86,10 +98,26 @@ module.exports = {
             }, {});
           });
       })
-      .then(result => new Promise(resolve => setTimeout(() => resolve(result), 5000)));
+      .then(result => new Promise(resolve => setTimeout(() => resolve(result), 5000)))
+      .then(result => {
+        logger.info('File mounted', {
+          osFile
+        });
+
+        return result;
+      })
+      .catch(err => {
+        logger.error('Mount error', err);
+
+        return Promise.reject(err);
+      });
   },
 
   unmount (ignoreError = false) {
+    logger.info('Unmounting file', {
+      ignoreError,
+    });
+
     const dirs = Object.values(config.dirs);
     const tasks = dirs.map(dir => exec(`umount ${dir}`));
 
@@ -121,6 +149,16 @@ module.exports = {
           }, []);
 
         return Promise.all(tasks);
+      })
+      .then(result => {
+        logger.info('Unmount successful');
+
+        return result;
+      })
+      .catch(err => {
+        logger.error('Unmount error', err);
+
+        return Promise.reject(err);
       });
   }
 

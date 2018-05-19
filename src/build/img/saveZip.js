@@ -11,8 +11,16 @@ const util = require('util');
 const fs = require('fs-extra');
 
 /* Files */
+const logger = require('./logger');
 
-const exec = util.promisify(childProcess.exec);
+const exec = (cmd, opts) => {
+  logger.info('Execute Unix command', {
+    cmd,
+    opts
+  });
+
+  return util.promisify(childProcess.exec)(cmd, opts);
+};
 
 module.exports = (imgPath, config) => {
   const credentialsTarget = path.join(config.cacheDir, 'credentials.txt');
@@ -22,6 +30,14 @@ module.exports = (imgPath, config) => {
     `Password: ${config.password}`
   ].join('\n');
 
+  logger.info('Saving to ZIP file', {
+    saveTarget
+  });
+
+  logger.info('Writing credentials to file', {
+    credentialsTarget
+  });
+
   return Promise.resolve()
     .then(() => fs.writeFile(credentialsTarget, credentials))
     .then(() => {
@@ -30,8 +46,18 @@ module.exports = (imgPath, config) => {
 
       return exec(cmd);
     })
-    .then(() => ({
-      credentials,
-      saveTarget
-    }));
+    .then(() => fs.remove(credentialsTarget))
+    .then(() => {
+      logger.info('ZIP saved successfully');
+
+      return {
+        credentials,
+        saveTarget
+      };
+    })
+    .catch(err => {
+      logger.error('Error saving ZIP file', err);
+
+      return Promise.reject(err);
+    });
 };

@@ -10,6 +10,7 @@ const { _ } = require('lodash');
 const fs = require('fs-extra');
 
 /* Files */
+const logger = require('./logger');
 
 function configToEnvvars (config) {
   const output = Object.keys(config)
@@ -32,6 +33,8 @@ function configToEnvvars (config) {
 }
 
 module.exports = (config, { boot, root }) => {
+  logger.info('Configuring OS');
+
   const envvarConfig = configToEnvvars(config);
   const dataDir = path.join(__dirname, '..', 'data');
 
@@ -62,13 +65,23 @@ module.exports = (config, { boot, root }) => {
 
   return Promise.resolve()
     /* Enable SSH */
-    .then(() => fs.ensureFile(opts.sshFile))
+    .then(() => {
+      logger.info('Creating SSH file', opts.sshFile);
+
+      return fs.ensureFile(opts.sshFile);
+    })
     .then(() => {
       /* Set the WiFi data */
       if (!config.wifiSsid) {
         /* WiFi SSID not set - connect through ethernet */
+        logger.info('WiFI SSID not set - wired internet only')
         return;
       }
+
+      logger.info('Configuring WiFI', {
+        ssid: config.wifiSsid,
+        password: config.wifiPass,
+      });
 
       return fs.readFile(opts.wpaConfFile, 'utf8')
         .then(contents => {
@@ -88,11 +101,17 @@ module.exports = (config, { boot, root }) => {
           ].join('\n');
 
           return fs.appendFile(opts.wpaConfFile, wifi)
+            .then((result) => {
+              logger.info('WiFi configured');
+            });
         });
     })
     .then(() => {
       /* Copy the hosts file */
       return fs.copy(opts.hosts.src, opts.hosts.dest)
+        .then(() => {
+          logger.info(`Copied ${opts.hosts.src} to ${opts.hosts.dest}`);
+        });
     })
     .then(() => {
       /* Set a daily crontab to update the OS */
@@ -145,5 +164,10 @@ exit 0`;
 
           return fs.writeFile(opts.rcLocal, newFile, 'utf8');
         });
+    })
+    .catch(err => {
+      logger.error('OS configuration error', err);
+
+      return Promise.reject(err);
     });
 };
