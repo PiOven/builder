@@ -2,7 +2,6 @@
  * index
  */
 
-'use strict';
 
 /* Node modules */
 const path = require('path');
@@ -19,9 +18,7 @@ const keyDir = path.join(process.env.CACHE_DIR, 'ssh-keys');
 
 Promise.resolve()
   .then(() => fs.mkdirp(keyDir))
-  .then(() => {
-    return inquirer.prompt(questions);
-  })
+  .then(() => inquirer.prompt(questions))
   .then((answers) => {
     /* Generate the SSH key */
     const location = path.join(keyDir, answers.hostname);
@@ -29,15 +26,23 @@ Promise.resolve()
     return new Promise((resolve, reject) => {
       keyGen({
         location,
-        comment: answers.hostname
-      }, err => {
+        comment: answers.hostname,
+      }, (err) => {
         if (err) {
           reject(err);
           return;
         }
 
-        answers.sshKey = location;
-        answers.sshKeyPub = `${location}.pub`;
+        Object.defineProperties(answers, {
+          sshKey: {
+            value: location,
+            enumerable: true,
+          },
+          sshKeyPub: {
+            value: `${location}.pub`,
+            enumerable: true,
+          },
+        });
 
         resolve(answers);
       });
@@ -50,7 +55,7 @@ Promise.resolve()
       .keys(answers)
       .filter(key => /^_/.test(key) === false)
       .filter(key => answers[key] !== undefined)
-      .forEach(key => {
+      .forEach((key) => {
         settings[key] = answers[key];
       });
 

@@ -5,7 +5,7 @@
   "main": "setup",
   "scripts": {
     "test": "npm run -s test:lint",
-    "test:lint": "semistandard ./src/**/*.js"
+    "test:lint": "eslint ./src/**/*.js"
   },
   "repository": {
     "type": "git",
@@ -35,6 +35,8 @@
     "winston": "^3.0.0-rc5"
   },
   "devDependencies": {
-    "semistandard": "^11.0.0"
+    "eslint": "^4.19.1",
+    "eslint-config-airbnb-base": "^12.1.0",
+    "eslint-plugin-import": "^2.12.0"
   }
 }

@@ -2,7 +2,6 @@
  * validation
  */
 
-'use strict';
 
 /* Node modules */
 const fs = require('fs');
@@ -15,13 +14,13 @@ const validateIp = require('validate-ip');
 /* Files */
 
 module.exports = {
-  integer: input => {
+  integer: (input) => {
     const str = input.toString();
 
     return /^\d+$/.test(str) ? true : 'Input must be an integer';
   },
 
-  isEmail: input => {
+  isEmail: (input) => {
     if (!input) {
       return true;
     }
@@ -33,18 +32,18 @@ module.exports = {
     fs.stat(input, (err, stats) => {
       if (err) {
         reject(err);
-        return;
+        return undefined;
       }
 
       return stats;
     });
-  }).then(stats => {
+  }).then((stats) => {
     if (!stats.isFile()) {
       return Promise.reject(new Error(`${input} is not a file`));
     }
 
     return true;
-  }).catch(err => {
+  }).catch((err) => {
     if (err.code === 'ENOENT') {
       return Promise.reject(new Error(`File ${input} does not exist`));
     }
@@ -52,10 +51,10 @@ module.exports = {
     return Promise.reject(err);
   }),
 
-  isGTE: target => input => {
+  isGTE: target => (input) => {
     const num = Number(input);
 
-    if (isNaN(num)) {
+    if (Number.isNaN(num)) {
       return 'Must be a number';
     } else if (num < target) {
       return `Must be ${target} or greater`;
@@ -64,7 +63,7 @@ module.exports = {
     return true;
   },
 
-  isIp: input => {
+  isIp: (input) => {
     if (!input) {
       return true;
     }
@@ -99,20 +98,16 @@ module.exports = {
     return true;
   },
 
-  multi: rules => (input, values) => {
-    return rules
-      .reduce((thenable, rule) => {
-        return thenable
-          .then(() => rule(input, values))
-          .then(isValid => {
-            if (isValid !== true) {
-              return Promise.reject(isValid);
-            }
+  multi: rules => (input, values) => rules
+    .reduce((thenable, rule) => thenable
+      .then(() => rule(input, values))
+      .then((isValid) => {
+        if (isValid !== true) {
+          return Promise.reject(isValid);
+        }
 
-            return isValid;
-          });
-      }, Promise.resolve());
-  },
+        return isValid;
+      }), Promise.resolve()),
 
-  required: input => input !== '' ? true : 'Required field'
+  required: input => (input !== '' ? true : 'Required field'),
 };
