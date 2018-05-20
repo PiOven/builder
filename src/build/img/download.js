@@ -95,8 +95,7 @@ function extractZip (compressedFile, outputDir) {
   return new Promise((resolve, reject) => {
     fs.createReadStream(compressedFile)
       .pipe(unzip.Extract({
-        path: outputDir,
-        verbose: true
+        path: outputDir
       }))
       .on('close', () => {
         resolve(outputDir);
