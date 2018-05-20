@@ -30,6 +30,7 @@
     "request": "^2.85.0",
     "ssh-keygen": "^0.4.1",
     "unzip": "^0.1.11",
+    "uuid": "^3.2.1",
     "validate-ip": "^1.0.1",
     "winston": "^3.0.0-rc5"
   },

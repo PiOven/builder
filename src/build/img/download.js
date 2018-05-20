@@ -41,6 +41,7 @@ function download (url, target, filename, guessChecksum = false) {
 
   if (guessChecksum) {
     const ext = discoverChecksum(url);
+    filePath = filePath.replace(`.${ext}`, '');
     filePath += `.${ext}`;
   }
 
@@ -153,12 +154,12 @@ function verifyDownload (downloadPath, verifyPath) {
 module.exports = (url, target, checksum) => Promise.resolve()
   .then(() => {
     const tasks = [
-      download(url, target, 'os.zip')
+      download(url, target, path.basename(url))
     ];
 
     /* Checksum is optional */
     if (checksum) {
-      tasks.push(download(checksum, target, 'checksum', true));
+      tasks.push(download(checksum, target, path.basename(checksum), true));
     }
 
     return Promise.all(tasks)
@@ -202,11 +203,4 @@ module.exports = (url, target, checksum) => Promise.resolve()
 
       resolve(result[0]);
     });
-  }))
-  .then(imgfile => {
-    /* Rename the target file */
-    const outputFile = path.join(target, 'os.img');
-
-    return fs.rename(imgfile, outputFile)
-      .then(() => outputFile);
-  });
+  }));

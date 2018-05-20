@@ -9,6 +9,7 @@ const util = require('util');
 
 /* Third-party modules */
 const fs = require('fs-extra');
+const uuid = require('uuid');
 
 /* Files */
 const logger = require('./logger');
@@ -23,8 +24,10 @@ const exec = (cmd, opts) => {
 };
 
 module.exports = (imgPath, config) => {
-  const credentialsTarget = path.join(config.cacheDir, 'credentials.txt');
-  const saveTarget = path.join(config.cacheDir, `${config.hostname}.zip`);
+  const id = uuid.v4();
+
+  const credentialsTarget = path.join(config.cacheDir, `${config.hostname}-${id}.txt`);
+  const saveTarget = path.join(config.cacheDir, `${config.hostname}-${id}.zip`);
   const credentials = [
     `Username: ${config.username}`,
     `Password: ${config.password}`
