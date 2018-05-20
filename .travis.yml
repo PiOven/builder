@@ -20,4 +20,4 @@ deploy:
   skip_cleanup: true
   on:
     tags: true
-  repo: riggerthegeek/pibuilder
+  repo: pioven/builder
