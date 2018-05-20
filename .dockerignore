@@ -1,1 +1,6 @@
 .gitkeep
+cache
+data
+files
+node_modules
+scripts

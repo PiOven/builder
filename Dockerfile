@@ -1,8 +1,7 @@
 FROM node:8-alpine
 
 WORKDIR /opt/builder
-ADD ./src ./src
-ADD package*.json ./
+ADD . .
 
 VOLUME /opt/builder/cache
 
