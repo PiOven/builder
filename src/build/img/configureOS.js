@@ -162,7 +162,8 @@ module.exports = (config, { boot, root }) => {
   reboot
 fi
 
-exit 0`;
+exit 0
+`;
 
           return fs.writeFile(opts.rcLocal, newFile, 'utf8');
         });
