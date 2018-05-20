@@ -158,7 +158,7 @@ module.exports = (config, { boot, root }) => {
   printf 'Setting up the Pi'
   sh ${firstRunFile}
   printf 'Pi setup'
-  
+
   reboot
 fi
 
