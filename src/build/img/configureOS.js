@@ -66,7 +66,9 @@ module.exports = (config, { boot, root }) => {
   return Promise.resolve()
     /* Enable SSH */
     .then(() => {
-      logger.info('Creating SSH file', opts.sshFile);
+      logger.info('Creating SSH file', {
+        sshFile: opts.sshFile
+      });
 
       return fs.ensureFile(opts.sshFile);
     })
