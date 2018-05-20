@@ -49,7 +49,20 @@ module.exports = (imgPath, config) => {
 
       return exec(cmd);
     })
-    .then(() => fs.remove(credentialsTarget))
+    .then(() => {
+      logger.info('Removing credentials', {
+        credentialsTarget,
+      });
+
+      return fs.remove(credentialsTarget);
+    })
+    .then(() => {
+      logger.info('Removing image', {
+        imgPath,
+      });
+
+      return fs.remove(imgPath);
+    })
     .then(() => {
       logger.info('ZIP saved successfully');
 
