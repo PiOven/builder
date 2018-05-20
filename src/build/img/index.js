@@ -38,6 +38,10 @@ Promise.resolve()
     });
   })
   .catch((err) => {
-    logger.error('General error', err);
+    logger.error({
+      message: err.message,
+      code: err.code,
+      stack: err.stack
+    });
     process.exit(1);
   });
