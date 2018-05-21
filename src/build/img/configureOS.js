@@ -63,6 +63,9 @@ module.exports = (config, { boot, root }) => {
     wpaConfFile: path.join(root.dir, 'etc', 'wpa_supplicant', 'wpa_supplicant.conf')
   };
 
+  /* Set the config path */
+  opts.configPath = path.join(opts.firstRun.dest, 'config.sh');
+
   return Promise.resolve()
     /* Enable SSH */
     .then(() => {
@@ -134,7 +137,7 @@ module.exports = (config, { boot, root }) => {
       /* Copy the data required for first run */
       return Promise.all([
         fs.copy(config.sshKeyPub, path.join(opts.firstRun.dest, 'data', 'id_rsa.pub')),
-        fs.writeFile(path.join(opts.firstRun.dest, 'config.sh'), envvarConfig, 'utf8'),
+        fs.writeFile(opts.configPath, envvarConfig, 'utf8'),
       ]);
     })
     .then(() => {
@@ -156,6 +159,7 @@ module.exports = (config, { boot, root }) => {
 
           newFile += `if [ -f ${firstRunFile} ]; then
   printf 'Setting up the Pi'
+  source ${opts.configPath}
   sh ${firstRunFile}
   printf 'Pi setup'
 
