@@ -8,7 +8,7 @@ all: setup build
 build:
 	make docker-run CMD="node ./src/build/img"
 
-	@echo "Now write .${CACHE_DIR}/os.img to an SD card and put into a Pi. This will take up to 5 minutes to configure"
+	@echo "Now write .${CACHE_DIR}/os.img to an SD card and put into a Pi. This will take up to 5 minutes to boot and configure"
 .PHONY: build
 
 docker-build:
