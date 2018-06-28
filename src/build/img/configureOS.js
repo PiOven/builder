@@ -159,12 +159,21 @@ module.exports = (config, { boot, root }) => {
 
           newFile += `if [ -f ${firstRunFile} ]; then
   printf 'Setting up the Pi'
-  source ${opts.configPath}
-  sh ${firstRunFile}
-  printf 'Pi setup'
+  /bin/bash ${firstRunFile}
+  exitCode = $?
 
-  reboot
+  if [ \${exitCode} -eq "0" ]; then
+    printf 'Pi setup - rebooting'
+    reboot
+  fi
 fi
+
+# Update hostname
+CURRENT_IP=$(hostname -I | awk '{print $1}')
+OLD_HOST=$(hostname -s)
+NEW_HOST="${config.hostname}-\${CURRENT_IP//./-}"
+hostnamectl set-hostname "\${NEW_HOST}"
+sed -i "s/$OLD_HOST/$NEW_HOST/g" "/etc/hosts"
 
 exit 0
 `;

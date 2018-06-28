@@ -1,4 +1,4 @@
-#!/usr/bin/env bash
+#!/bin/bash
 
 #>> /var/log/rc.local.log exec 2>&1
 
@@ -15,6 +15,9 @@ set -e
 # at any point before it finishes.
 ###
 
+# This will be put here by the builder
+source /pioven/config.sh
+
 CWD="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 
 log ()
@@ -26,8 +29,11 @@ log ()
 
 piTask ()
 {
-  FILE=${CWD}/$1
+  TASK_FILE=$1
   EXECUTABLE=$2
+
+  FILE=${CWD}/${TASK_FILE}
+  ERROR_FILE=/pioven-err/${TASK_FILE}
 
   if [ -z ${EXECUTABLE} ]; then
     echo "Defaulting EXECUTABLE to bash" | log
@@ -43,8 +49,16 @@ piTask ()
 
     if [ ${RETVAL_BASH} != 0 ]; then
       echo "Exiting with code ${RETVAL_BASH}" | log
+
+      mkdir -p ${ERROR_FILE}
+
+      echo "Moving file to ${ERROR_FILE}"
+      mv ${FILE} ${ERROR_FILE}
       exit ${RETVAL_BASH}
     fi
+
+    echo "Deleting file: ${FILE}" | log
+    rm ${FILE}
   else
     # This could be thought of as an error, but let's assume this task has been done
     echo "File ${FILE} doesn't exist - task has run" | log

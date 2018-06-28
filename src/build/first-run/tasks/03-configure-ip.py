@@ -76,8 +76,11 @@ CONFIG_START_IP = os.environ.get('PI_IP_ADDRESS_RANGE_START')
 CONFIG_END_IP = os.environ.get('PI_IP_ADDRESS_RANGE_END')
 DNS_ADDRESS = os.environ.get('PI_DNS_ADDRESS')
 
-if CONFIG_START_IP is not None and CONFIG_END_IP is not None:
-    TARGET_IP_ADDRESS = get_ip_address(CONFIG_START_IP, CONFIG_END_IP)
+if CONFIG_START_IP is None or CONFIG_END_IP is None:
+    print "IP range not set - don't set static IP"
+    exit(0)
+
+TARGET_IP_ADDRESS = get_ip_address(CONFIG_START_IP, CONFIG_END_IP)
 
 for iface in IFACES:
     try:
