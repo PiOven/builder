@@ -129,7 +129,7 @@ const Validate = {
 const questions = [{
   type: 'input',
   name: 'PI_OS',
-  default: 'https://downloads.raspberrypi.org/raspbian_lite/images/raspbian_lite-2017-07-05/2017-07-05-raspbian-jessie-lite.zip',
+  default: 'https://downloads.raspberrypi.org/raspbian_lite/images/raspbian_lite-2018-11-15/2018-11-13-raspbian-stretch-lite.zip',
   message: 'Operating System URL',
   validate: Validate.required
 }, {
