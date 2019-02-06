@@ -115,12 +115,13 @@ with open(os.environ.get('NETWORK_CONFIG'), 'w') as the_file:
             the_file.write('allow-hotplug ' + iface + '\n')
 
         if VALUES:
+            the_file.write('auto ' + iface + '\n')
             the_file.write('iface ' + iface + ' inet static\n')
             the_file.write('    wireless-power off\n')
             the_file.write('    address ' + VALUES[0]['addr'] + '\n')
             the_file.write('    netmask ' + VALUES[0]['netmask'] + '\n')
             the_file.write('    gateway ' + VALUES[1] + '\n')
-            the_file.write('    gateway dns-nameservers ' + DNS_ADDRESS + '\n')
+            the_file.write('    dns-nameservers ' + DNS_ADDRESS + '\n')
         else:
             the_file.write('iface ' + iface + ' inet manual\n')
 
