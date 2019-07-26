@@ -27,7 +27,7 @@ download () {
   mv ${CACHE_DIR}/unzip/* ${UNZIP_TARGET}
   rm -Rf "${CACHE_DIR}/unzip"
 
-  sleep 5
+  sleep 1
 }
 
 padNumber () {
@@ -81,7 +81,7 @@ PI_PASSWORD=$(cat /dev/urandom | tr -dc 'a-zA-Z0-9' | fold -w ${PI_PASSWORD_LENG
 # Download the operating system
 download ${PI_OS}
 
-LOOP=$(kpartx -va ${UNZIP_TARGET})
+LOOP=$(kpartx -sva ${UNZIP_TARGET})
 
 MOUNT_POINTS=$(echo ${LOOP} | grep -ioE 'loop(\w+)')
 
@@ -96,7 +96,7 @@ while read -r line; do
   fi
 done <<< "$MOUNT_POINTS"
 
-sleep 5
+sleep 1
 
 # Enable SSH
 touch ${BOOT_DIR}/ssh
