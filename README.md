@@ -1,3 +1,5 @@
+> This project has now moved to [GitLab](https://gitlab.com/pi-oven/builder).
+
 # Pi Builder
 
 [![Build Status](https://travis-ci.org/PiOven/builder.svg?branch=master)](https://travis-ci.org/PiOven/builder)
